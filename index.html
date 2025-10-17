@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Invitación Boda Civil — [Tu Nombre] & [Su Nombre]</title>
+    <meta
+      name="description"
+      content="Acompáñanos a celebrar nuestra boda civil. Toda la información: fecha, lugar, itinerario y confirmación de asistencia (RSVP)."
+    />
+    <meta property="og:title" content="Invitación Boda Civil" />
+    <meta
+      property="og:description"
+      content="Acompáñanos a celebrar nuestra boda civil."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="" />
+    <!-- Opcional: URL de portada -->
+    <meta name="theme-color" content="#6b5bff" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #0f1221;
+        --bg-2: #121631;
+        --txt: #f4f6ff;
+        --muted: #b8bce6;
+        --brand: #8b7bff; /* primario */
+        --brand-2: #67d6ff; /* acento */
+        --card: rgba(255, 255, 255, 0.06);
+        --ring: rgba(139, 123, 255, 0.35);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100%;
+      }
+      body {
+        margin: 0;
+        font-family: Poppins, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu,
+          Cantarell, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji",
+          "Segoe UI Emoji";
+        color: var(--txt);
+        background: radial-gradient(
+            1200px 600px at 10% -10%,
+            #1e2248 0%,
+            transparent 60%
+          ),
+          radial-gradient(900px 900px at 120% 10%, #202764 0%, transparent 55%),
+          linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+        background-attachment: fixed;
+      }
+      .wrap {
+        max-width: 1080px;
+        margin: 0 auto;
+        padding: 24px;
+      }
+      header.hero {
+        position: relative;
+        overflow: hidden;
+        border-radius: 24px;
+        padding: 56px 32px;
+        text-align: center;
+        background: linear-gradient(
+          135deg,
+          rgba(139, 123, 255, 0.28),
+          rgba(103, 214, 255, 0.18)
+        );
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35),
+          inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+      }
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.08);
+        color: var(--muted);
+        font-size: 12px;
+        letter-spacing: 0.4px;
+      }
+      .chip svg {
+        opacity: 0.85;
+      }
+      h1 {
+        font-family: "Playfair Display", serif;
+        font-weight: 700;
+        margin: 18px 0 8px;
+        font-size: clamp(32px, 5vw, 56px);
+      }
+      .and {
+        opacity: 0.65;
+        font-weight: 400;
+      }
+      .sub {
+        color: var(--muted);
+      }
+      .cta {
+        margin-top: 10px;
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      .btn {
+        appearance: none;
+        border: 0;
+        padding: 12px 18px;
+        border-radius: 14px;
+        cursor: pointer;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .btn-primary {
+        background: linear-gradient(135deg, var(--brand), var(--brand-2));
+        color: #0b0f1a;
+        box-shadow: 0 6px 18px var(--ring);
+      }
+      .btn-ghost {
+        background: rgba(255, 255, 255, 0.08);
+        color: var(--txt);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+      }
+      section {
+        margin-top: 28px;
+      }
+      .card {
+        background: var(--card);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 20px;
+        padding: 22px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+      }
+      .grid {
+        display: grid;
+        gap: 18px;
+      }
+      @media (min-width: 900px) {
+        .grid-3 {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+      @media (min-width: 720px) {
+        .grid-2 {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+      h2 {
+        font-family: "Playfair Display", serif;
+        font-size: clamp(22px, 3.2vw, 32px);
+        margin: 0 0 6px;
+      }
+      p {
+        margin: 6px 0 10px;
+        line-height: 1.7;
+      }
+      .muted {
+        color: var(--muted);
+      }
+      .countdown {
+        display: flex;
+        justify-content: center;
+        gap: 14px;
+        margin-top: 16px;
+      }
+      .timebox {
+        min-width: 86px;
+        text-align: center;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
+        padding: 10px;
+      }
+      .timebox .num {
+        font-size: 28px;
+        font-weight: 700;
+      }
+      .timebox .lbl {
+        font-size: 12px;
+        letter-spacing: 0.3px;
+        color: var(--muted);
+      }
+      .timeline {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+      .timeline li {
+        display: grid;
+        grid-template-columns: 120px 1fr;
+        gap: 12px;
+        align-items: start;
+        padding: 10px 0;
+        border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+      }
+      .timeline time {
+        font-weight: 600;
+      }
+      iframe.map {
+        width: 100%;
+        height: 320px;
+        border: 0;
+        border-radius: 14px;
+      }
+      form .row {
+        display: grid;
+        gap: 12px;
+      }
+      @media (min-width: 680px) {
+        form .row {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+      select option {
+        color: black;
+      }
+      input,
+      select,
+      textarea {
+        width: 100%;
+        padding: 12px 14px;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        background: rgba(255, 255, 255, 0.06);
+        color: var(--txt);
+        outline: none;
+      }
+      input::placeholder,
+      textarea::placeholder {
+        color: #cfd3ff8f;
+      }
+      label {
+        font-size: 12px;
+        color: var(--muted);
+      }
+      .note {
+        font-size: 14px;
+        color: var(--muted);
+      }
+      .gallery {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+      }
+      .gallery img {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+        border-radius: 14px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      footer {
+        opacity: 0.8;
+        font-size: 12px;
+        text-align: center;
+        padding: 26px 6px;
+      }
+      .badge {
+        display: inline-block;
+        font-size: 11px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+      }
+      .giftlist a {
+        display: inline-block;
+        margin: 6px 8px 0 0;
+      }
+      .floating-leaves {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.2));
+      }
+      .leaf {
+        position: absolute;
+        opacity: 0.5;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="hero" aria-labelledby="tituloppal">
+        <!-- Adorno simple -->
+        <svg
+          class="floating-leaves"
+          viewBox="0 0 600 300"
+          preserveAspectRatio="none"
+          aria-hidden="true"
+        >
+          <circle
+            class="leaf"
+            cx="520"
+            cy="60"
+            r="28"
+            fill="#8b7bff"
+            fill-opacity="0.18"
+          />
+          <circle
+            class="leaf"
+            cx="40"
+            cy="220"
+            r="36"
+            fill="#67d6ff"
+            fill-opacity="0.16"
+          />
+        </svg>
+        <span class="chip" role="note" aria-label="Boda civil">
+          <!-- icono anillos -->
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              d="M10 7a7 7 0 1 0 7 7h-2a5 5 0 1 1-5-5V7zM14 3h6v2h-6V3zm-1.414 2.586 1.414 1.414L12 9 10.586 7.586 12.586 5.586zM17 10a7 7 0 1 1-4.95 2.05l1.414 1.414A5 5 0 1 0 17 12v-2z"
+            />
+          </svg>
+          Boda civil
+        </span>
+        <h1 id="tituloppal">
+          <span id="novios">[Tu Nombre]</span> <span class="and">&</span>
+          <span id="novia">[Su Nombre]</span>
+        </h1>
+        <p class="sub" id="fecha-legible">
+          Sábado 20 de diciembre de 2025 · 5:30 p.m.
+        </p>
+        <div class="countdown" aria-label="Cuenta regresiva">
+          <div class="timebox" aria-live="polite">
+            <div class="num" id="dd">00</div>
+            <div class="lbl">Días</div>
+          </div>
+          <div class="timebox">
+            <div class="num" id="hh">00</div>
+            <div class="lbl">Horas</div>
+          </div>
+          <div class="timebox">
+            <div class="num" id="mm">00</div>
+            <div class="lbl">Min</div>
+          </div>
+          <div class="timebox">
+            <div class="num" id="ss">00</div>
+            <div class="lbl">Seg</div>
+          </div>
+        </div>
+        <p class="sub">Favor de confirmar asistencia</p>
+        <div class="cta">
+          <a class="btn btn-primary" href="#rsvp">Confirmar asistencia</a>
+          <button class="btn btn-ghost" id="btnCal">
+            Agregar al calendario
+          </button>
+        </div>
+      </header>
+
+      <!-- Datos principales -->
+      <section class="grid grid-1" aria-labelledby="datos">
+        <article class="card">
+          <p>
+            El amor, cuando es verdadero, se reconoce en la calma de una mirada,
+            en la complicidad de un gesto y en la certeza de un “para siempre”
+            compartido.
+          </p>
+          <br />
+          <p>
+            Hoy, con el corazón pleno y la ilusión de un nuevo comienzo, hemos
+            decidido unir sus vidas ante la ley y ante las personas que más
+            queremos. Nada nos haría más felices que contar con su presencia en
+            este día tan especial, para celebrar juntos el amor que nos une y la
+            alegría de este nuevo capítulo que comienza.
+          </p>
+        </article>
+      </section>
+      <section class="grid grid-3" aria-labelledby="datos">
+        <article class="card">
+          <h2 id="datos">Detalles</h2>
+          <p>
+            <strong>Fecha:</strong>
+            <span id="fecha-texto">20 de diciembre de 2025</span>
+          </p>
+          <p><strong>Hora:</strong> <span id="hora-texto">17:30</span></p>
+          <p>
+            <strong>Lugar:</strong> <span id="lugar-nombre">Salón Aurora</span>
+          </p>
+          <p class="muted" id="lugar-direccion">
+            Av. Siempre Viva 123, Ciudad, País
+          </p>
+          <p class="note">Por favor llega con 15 minutos de anticipación.</p>
+        </article>
+        <article class="card">
+          <h2>Dress code</h2>
+          <p>Formal/Coctel. Colores sugeridos: neutros y tonos azules.</p>
+          <span class="badge"
+            >Sin pinches mocosas alv · Evento al interior</span
+          >
+        </article>
+
+        <article class="card">
+          <h2>Itinerario</h2>
+          <ul class="timeline">
+            <li>
+              <time>17:30</time>
+              <div>Recepción y bienvenida</div>
+            </li>
+            <li>
+              <time>18:00</time>
+              <div>Ceremonia civil</div>
+            </li>
+            <li>
+              <time>18:45</time>
+              <div>Brindis y fotos</div>
+            </li>
+            <li>
+              <time>19:30</time>
+              <div>Coctel / Cena ligera</div>
+            </li>
+          </ul>
+        </article>
+      </section>
+
+      <!-- Ubicación -->
+      <section class="grid grid-2" aria-labelledby="ubica">
+        <article class="card">
+          <h2 id="ubica">¿Cómo llegar?</h2>
+          <p>
+            Te esperamos en <strong id="lugar-nombre-2">Salón Aurora</strong>.
+            Usa el mapa para trazar tu ruta.
+          </p>
+          <!-- Reemplaza el src del iframe con el de tu lugar -->
+          <iframe
+            class="map"
+            loading="lazy"
+            allowfullscreen
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3741.5970360311803!2d-102.77218802404289!3d20.3169400118447!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x842edf23424a7569%3A0xa890ee036bc35e85!2sQuinta%20Sofia!5e0!3m2!1ses-419!2smx!4v1760655583722!5m2!1ses-419!2smx"
+          ></iframe>
+          <p class="note">Estacionamiento disponible frente al recinto.</p>
+        </article>
+        <article class="card">
+          <h2>Galería</h2>
+          <div class="gallery" aria-label="Galería de fotos">
+            <img
+              src="https://images.unsplash.com/photo-1520975922284-8b456906c813?q=80&w=1200&auto=format&fit=crop"
+              alt="Anillos de boda sobre flores"
+            />
+            <img
+              src="https://images.unsplash.com/photo-1520967824495-b529aeba26dc?q=80&w=1200&auto=format&fit=crop"
+              alt="Decoración elegante en tonos azules"
+            />
+            <img
+              src="https://images.unsplash.com/photo-1521334726092-b509a19597d2?q=80&w=1200&auto=format&fit=crop"
+              alt="Copa de brindis"
+            />
+            <img
+              src="https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1200&auto=format&fit=crop"
+              alt="Detalle floral del evento"
+            />
+          </div>
+        </article>
+      </section>
+
+      <!-- RSVP -->
+      <section id="rsvp" class="card" aria-labelledby="confirma">
+        <h2 id="confirma">Confirmación de asistencia (RSVP)</h2>
+        <p class="muted">Tu respuesta nos ayuda a planear mejor. ¡Gracias!</p>
+        <!-- Opción 1: usa Formspree (reemplaza TU_ID) -->
+        <form action="https://formspree.io/f/TU_ID" method="POST">
+          <div class="row">
+            <div>
+              <label for="nombre">Nombre completo</label>
+              <input
+                id="nombre"
+                name="nombre"
+                type="text"
+                placeholder="Ejem: Ana Pérez"
+                required
+              />
+            </div>
+            <div>
+              <label for="telefono">Teléfono</label>
+              <input
+                id="telefono"
+                name="telefono"
+                type="tel"
+                placeholder="10 dígitos"
+                pattern="[0-9\s\-\+]{8,}"
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div>
+              <label for="asistencia">¿Asistirás?</label>
+              <select id="asistencia" name="asistencia" required>
+                <option value="">Selecciona…</option>
+                <option>Sí, ahí estaré</option>
+                <option>No podré asistir</option>
+              </select>
+            </div>
+            <div>
+              <label for="acompanantes">Acompañantes</label>
+              <select id="acompanantes" name="acompanantes">
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="5">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <label for="comentarios">Comentarios (alergias, notas)</label>
+            <textarea
+              id="comentarios"
+              name="comentarios"
+              rows="3"
+              placeholder="Opcional"
+            ></textarea>
+          </div>
+          <div
+            style="
+              display: flex;
+              gap: 10px;
+              align-items: center;
+              margin-top: 10px;
+            "
+          >
+            <button class="btn btn-primary" type="submit">
+              Enviar confirmación
+            </button>
+            <span class="note"
+              >Al enviar aceptas el tratamiento básico de tus datos para esta
+              invitación.</span
+            >
+          </div>
+        </form>
+        <!-- Opción 2: elimina 'action' y usa mailto:, o conecta a tu backend -->
+      </section>
+
+      <!-- Mesa de regalos / Nota -->
+      <section class="grid grid-2" aria-labelledby="regalos">
+        <article class="card giftlist">
+          <h2 id="regalos">Nada de regalos ojetes</h2>
+          <p class="muted">aqui puro pinche billete uno tras otros, por favor y gracias</p>
+        </article>
+        <article class="card">
+          <h2>Información útil</h2>
+          <ul>
+            <li>Clima esperado templado. Considera un abrigo ligero.</li>
+            <li>Habrá área designada para fumar en exterior.</li>
+            <li>
+              Si necesitas hospedaje, contáctanos para sugerencias cercanas.
+            </li>
+          </ul>
+        </article>
+      </section>
+
+      <footer>
+        Hecho con ♥ por y para la familia y amigos. —
+        <span class="muted">#BodaCivil</span>
+      </footer>
+    </div>
+
+    <script>
+      // ============ CONFIG RÁPIDA ============
+      // Cambia estos datos y el resto del contenido se actualiza solo.
+      const INVITACION = {
+        novios: "Jessica Gutierrez ",
+        novia: "Mariano Barajas ",
+        // Fecha/Hora de la ceremonia (zona horaria del visitante)
+        // Formato: AAAA-MM-DDTHH:mm (24h)
+        fechaISO: "2025-12-27T15:00",
+        lugar: {
+          nombre: "Quinta Sofia",
+          direccion:
+            "Libertad 150, Los Agricultores de Ocotlán, 47980 Ocotlán, Jal",
+        },
+      };
+
+      // Set de textos
+      document.getElementById("novios").textContent = INVITACION.novios;
+      document.getElementById("novia").textContent = INVITACION.novia;
+      document.getElementById("lugar-nombre").textContent =
+        INVITACION.lugar.nombre;
+      document.getElementById("lugar-nombre-2").textContent =
+        INVITACION.lugar.nombre;
+      document.getElementById("lugar-direccion").textContent =
+        INVITACION.lugar.direccion;
+
+      // Formateo de fecha legible
+      const f = new Date(INVITACION.fechaISO);
+      const fmt = new Intl.DateTimeFormat("es-MX", {
+        weekday: "long",
+        day: "2-digit",
+        month: "long",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+      const soloFecha = new Intl.DateTimeFormat("es-MX", {
+        day: "2-digit",
+        month: "long",
+        year: "numeric",
+      });
+      const soloHora = new Intl.DateTimeFormat("es-MX", {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+      document.getElementById("fecha-legible").textContent = fmt
+        .format(f)
+        .replace(",", " ·");
+      document.getElementById("fecha-texto").textContent = soloFecha.format(f);
+      document.getElementById("hora-texto").textContent = soloHora.format(f);
+
+      // Cuenta regresiva
+      const dd = document.getElementById("dd"),
+        hh = document.getElementById("hh"),
+        mm = document.getElementById("mm"),
+        ss = document.getElementById("ss");
+      function tick() {
+        const now = new Date();
+        const t = f - now; // ms
+        if (t <= 0) {
+          dd.textContent = "00";
+          hh.textContent = "00";
+          mm.textContent = "00";
+          ss.textContent = "00";
+          return;
+        }
+        const sec = Math.floor(t / 1000) % 60;
+        const min = Math.floor(t / 1000 / 60) % 60;
+        const hr = Math.floor(t / 1000 / 60 / 60) % 24;
+        const day = Math.floor(t / 1000 / 60 / 60 / 24);
+        dd.textContent = String(day).padStart(2, "0");
+        hh.textContent = String(hr).padStart(2, "0");
+        mm.textContent = String(min).padStart(2, "0");
+        ss.textContent = String(sec).padStart(2, "0");
+      }
+      tick();
+      setInterval(tick, 1000);
+
+      // Agregar al calendario (genera un .ics en el momento y también un link a Google Calendar)
+      document.getElementById("btnCal").addEventListener("click", () => {
+        const start = f.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
+        const endDt = new Date(f.getTime() + 90 * 60000); // +90 min
+        const end =
+          endDt.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
+        const titulo = `Boda civil: ${INVITACION.novios} & ${INVITACION.novia}`;
+        const descr = "¡Acompáñanos a celebrar este momento especial!";
+        const loc = `${INVITACION.lugar.nombre} — ${INVITACION.lugar.direccion}`;
+
+        // Archivo ICS
+        const ics = [
+          "BEGIN:VCALENDAR",
+          "VERSION:2.0",
+          "PRODID:-//Invitacion Boda//ES",
+          "BEGIN:VEVENT",
+          `UID:${Date.now()}@invitacion`,
+          `DTSTAMP:${start}`,
+          `DTSTART:${start}`,
+          `DTEND:${end}`,
+          `SUMMARY:${titulo}`,
+          `DESCRIPTION:${descr}`,
+          `LOCATION:${loc}`,
+          "END:VEVENT",
+          "END:VCALENDAR",
+        ].join("\r\n");
+
+        const blob = new Blob([ics], { type: "text/calendar" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "boda.ics";
+        a.click();
+        URL.revokeObjectURL(url);
+
+        // Además, abre Google Calendar en nueva pestaña (el usuario decide guardar)
+        const gcal = new URL("https://www.google.com/calendar/render");
+        gcal.searchParams.set("action", "TEMPLATE");
+        gcal.searchParams.set("text", titulo);
+        gcal.searchParams.set("dates", `${start}/${end}`);
+        gcal.searchParams.set("details", descr);
+        gcal.searchParams.set("location", loc);
+        window.open(gcal.toString(), "_blank", "noopener");
+      });
+    </script>
+  </body>
+</html>
