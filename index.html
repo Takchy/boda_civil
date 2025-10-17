@@ -169,8 +169,9 @@
       }
       .countdown {
         display: flex;
+        flex-wrap: wrap;
         justify-content: center;
-        gap: 14px;
+        gap: clamp(8px, 2.5vw, 14px);
         margin-top: 16px;
       }
       .timebox {
@@ -557,7 +558,9 @@
       <section class="grid grid-2" aria-labelledby="regalos">
         <article class="card giftlist">
           <h2 id="regalos">Nada de regalos ojetes</h2>
-          <p class="muted">aqui puro pinche billete uno tras otros, por favor y gracias</p>
+          <p class="muted">
+            aqui puro pinche billete uno tras otros, por favor y gracias
+          </p>
         </article>
         <article class="card">
           <h2>Información útil</h2>
