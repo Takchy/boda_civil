@@ -659,6 +659,7 @@
       setInterval(tick, 1000);
     </script>
 
+    <!-- Script: Agregar al calendario según dispositivo (iOS/Android/Escritorio) -->
     <script>
       (function () {
         const btn =
@@ -755,6 +756,193 @@
         }
 
         clone.addEventListener("click", handler);
+      })();
+    </script>
+
+    <!-- Script: Ajuste iOS para abrir el calendario en vez de solo descargar -->
+    <script>
+      (function () {
+        const btn = document.getElementById("btnCal");
+        if (!btn) return;
+        const clone = btn.cloneNode(true);
+        btn.parentNode.replaceChild(clone, btn);
+
+        const eventDate =
+          typeof f !== "undefined" && f instanceof Date
+            ? f
+            : typeof INVITACION !== "undefined" && INVITACION.fechaISO
+            ? new Date(INVITACION.fechaISO)
+            : new Date();
+
+        function openForApple(ics) {
+          try {
+            const blob = new Blob([ics], {
+              type: "text/calendar;charset=utf-8",
+            });
+            const url = URL.createObjectURL(blob);
+            // Abrir en la misma pestaña ayuda a que iOS muestre el visor y ofrezca "Añadir"
+            window.location.href = url;
+            setTimeout(() => URL.revokeObjectURL(url), 5000);
+          } catch (err) {
+            // Fallback a data URL
+            const dataUrl =
+              "data:text/calendar;charset=utf-8," + encodeURIComponent(ics);
+            window.location.href = dataUrl;
+          }
+        }
+
+        function handler() {
+          const start =
+            eventDate.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
+          const endDt = new Date(eventDate.getTime() + 90 * 60000);
+          const end =
+            endDt.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
+          const titulo =
+            typeof INVITACION !== "undefined"
+              ? `Boda civil: ${INVITACION.novios} & ${INVITACION.novia}`
+              : "Boda civil";
+          const descr = "¡Acompáñanos a celebrar este momento especial!";
+          const loc =
+            typeof INVITACION !== "undefined"
+              ? `${INVITACION.lugar.nombre} — ${INVITACION.lugar.direccion}`
+              : "Lugar por confirmar";
+
+          const ics = [
+            "BEGIN:VCALENDAR",
+            "VERSION:2.0",
+            "PRODID:-//Invitacion Boda//ES",
+            "BEGIN:VEVENT",
+            `UID:${Date.now()}@invitacion`,
+            `DTSTAMP:${start}`,
+            `DTSTART:${start}`,
+            `DTEND:${end}`,
+            `SUMMARY:${titulo}`,
+            `DESCRIPTION:${descr}`,
+            `LOCATION:${loc}`,
+            "END:VEVENT",
+            "END:VCALENDAR",
+          ].join("\n");
+
+          const isAndroid = /Android/i.test(navigator.userAgent);
+          const isIOS = /iP(hone|ad|od)/i.test(navigator.userAgent);
+          const isMacTouch =
+            /Macintosh/i.test(navigator.userAgent) && "ontouchend" in document;
+          const isApple = isIOS || isMacTouch;
+
+          const gcal = new URL("https://www.google.com/calendar/render");
+          gcal.searchParams.set("action", "TEMPLATE");
+          gcal.searchParams.set("text", titulo);
+          gcal.searchParams.set("dates", `${start}/${end}`);
+          gcal.searchParams.set("details", descr);
+          gcal.searchParams.set("location", loc);
+
+          if (isApple) {
+            // iOS/iPadOS/macOS: abrir visor del sistema (no "descargar")
+            openForApple(ics);
+          } else if (isAndroid) {
+            // Android: Google Calendar
+            window.open(gcal.toString(), "_blank", "noopener");
+          } else {
+            // Escritorio / otros: GCal y también ICS por si usan Outlook/Apple
+            window.open(gcal.toString(), "_blank", "noopener");
+            const blob = new Blob([ics], {
+              type: "text/calendar;charset=utf-8",
+            });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "boda.ics";
+            document.body.appendChild(a);
+            a.click();
+            setTimeout(() => {
+              URL.revokeObjectURL(url);
+              a.remove();
+            }, 1500);
+          }
+        }
+
+        clone.addEventListener("click", handler);
+      })();
+    </script>
+
+    <!-- Script iPhone-only: abrir directamente el evento en Calendario de iOS -->
+    <script>
+      (function () {
+        const btn = document.getElementById("btnCal");
+        if (!btn) return;
+
+        // Quita listeners previos y deja sólo el de iPhone
+        const clone = btn.cloneNode(true);
+        btn.parentNode.replaceChild(clone, btn);
+
+        const isIOS =
+          /iP(hone|ad|od)/i.test(navigator.userAgent) ||
+          (/Macintosh/i.test(navigator.userAgent) && "ontouchend" in document);
+
+        function toICS(startISO, endISO, titulo, descr, loc) {
+          const start = startISO.replace(/[-:]/g, "").split(".")[0] + "Z";
+          const end = endISO.replace(/[-:]/g, "").split(".")[0] + "Z";
+          return [
+            "BEGIN:VCALENDAR",
+            "VERSION:2.0",
+            "PRODID:-//Invitacion Boda//ES",
+            "BEGIN:VEVENT",
+            `UID:${Date.now()}@invitacion`,
+            `DTSTAMP:${start}`,
+            `DTSTART:${start}`,
+            `DTEND:${end}`,
+            `SUMMARY:${titulo}`,
+            `DESCRIPTION:${descr}`,
+            `LOCATION:${loc}`,
+            "END:VEVENT",
+            "END:VCALENDAR",
+          ].join("\n");
+        }
+
+        function addToAppleCalendar() {
+          if (!isIOS) {
+            alert("Este botón está configurado sólo para iPhone/iPad.");
+            return;
+          }
+          const baseDate =
+            typeof f !== "undefined" && f instanceof Date
+              ? f
+              : typeof INVITACION !== "undefined" && INVITACION.fechaISO
+              ? new Date(INVITACION.fechaISO)
+              : new Date();
+          const startISO = baseDate.toISOString();
+          const endISO = new Date(
+            baseDate.getTime() + 90 * 60000
+          ).toISOString();
+          const titulo =
+            typeof INVITACION !== "undefined"
+              ? `Boda civil: ${INVITACION.novios} & ${INVITACION.novia}`
+              : "Boda civil";
+          const descr = "¡Acompáñanos a celebrar este momento especial!";
+          const loc =
+            typeof INVITACION !== "undefined"
+              ? `${INVITACION.lugar.nombre} — ${INVITACION.lugar.direccion}`
+              : "Lugar por confirmar";
+
+          const ics = toICS(startISO, endISO, titulo, descr, loc);
+
+          // iOS abre mejor el .ics si lo navegamos en la misma pestaña
+          try {
+            const blob = new Blob([ics], {
+              type: "text/calendar;charset=utf-8",
+            });
+            const url = URL.createObjectURL(blob);
+            window.location.href = url; // Muestra visor "Añadir a Calendario"
+            setTimeout(() => URL.revokeObjectURL(url), 5000);
+          } catch (e) {
+            // Fallback a data URL
+            const dataUrl =
+              "data:text/calendar;charset=utf-8," + encodeURIComponent(ics);
+            window.location.href = dataUrl;
+          }
+        }
+
+        clone.addEventListener("click", addToAppleCalendar);
       })();
     </script>
   </body>
