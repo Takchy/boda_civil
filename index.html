@@ -657,51 +657,105 @@
       }
       tick();
       setInterval(tick, 1000);
+    </script>
 
-      // Agregar al calendario (genera un .ics en el momento y también un link a Google Calendar)
-      document.getElementById("btnCal").addEventListener("click", () => {
-        const start = f.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
-        const endDt = new Date(f.getTime() + 90 * 60000); // +90 min
-        const end =
-          endDt.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
-        const titulo = `Boda civil: ${INVITACION.novios} & ${INVITACION.novia}`;
-        const descr = "¡Acompáñanos a celebrar este momento especial!";
-        const loc = `${INVITACION.lugar.nombre} — ${INVITACION.lugar.direccion}`;
+    <script>
+      (function () {
+        const btn =
+          document.getElementById && document.getElementById("btnCal");
+        if (!btn) return;
+        // Elimina posibles listeners previos clonando el nodo
+        const clone = btn.cloneNode(true);
+        btn.parentNode && btn.parentNode.replaceChild(clone, btn);
 
-        // Archivo ICS
-        const ics = [
-          "BEGIN:VCALENDAR",
-          "VERSION:2.0",
-          "PRODID:-//Invitacion Boda//ES",
-          "BEGIN:VEVENT",
-          `UID:${Date.now()}@invitacion`,
-          `DTSTAMP:${start}`,
-          `DTSTART:${start}`,
-          `DTEND:${end}`,
-          `SUMMARY:${titulo}`,
-          `DESCRIPTION:${descr}`,
-          `LOCATION:${loc}`,
-          "END:VEVENT",
-          "END:VCALENDAR",
-        ].join("\r\n");
+        const eventDate =
+          typeof f !== "undefined" && f instanceof Date
+            ? f
+            : typeof INVITACION !== "undefined" && INVITACION.fechaISO
+            ? new Date(INVITACION.fechaISO)
+            : new Date();
 
-        const blob = new Blob([ics], { type: "text/calendar" });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = "boda.ics";
-        a.click();
-        URL.revokeObjectURL(url);
+        function handler() {
+          const start =
+            eventDate.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
+          const endDt = new Date(eventDate.getTime() + 90 * 60000);
+          const end =
+            endDt.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
+          const titulo =
+            typeof INVITACION !== "undefined"
+              ? `Boda civil: ${INVITACION.novios} & ${INVITACION.novia}`
+              : "Boda civil";
+          const descr = "¡Acompáñanos a celebrar este momento especial!";
+          const loc =
+            typeof INVITACION !== "undefined"
+              ? `${INVITACION.lugar.nombre} — ${INVITACION.lugar.direccion}`
+              : "Lugar por confirmar";
 
-        // Además, abre Google Calendar en nueva pestaña (el usuario decide guardar)
-        const gcal = new URL("https://www.google.com/calendar/render");
-        gcal.searchParams.set("action", "TEMPLATE");
-        gcal.searchParams.set("text", titulo);
-        gcal.searchParams.set("dates", `${start}/${end}`);
-        gcal.searchParams.set("details", descr);
-        gcal.searchParams.set("location", loc);
-        window.open(gcal.toString(), "_blank", "noopener");
-      });
+          const ics = [
+            "BEGIN:VCALENDAR",
+            "VERSION:2.0",
+            "PRODID:-//Invitacion Boda//ES",
+            "BEGIN:VEVENT",
+            `UID:${Date.now()}@invitacion`,
+            `DTSTAMP:${start}`,
+            `DTSTART:${start}`,
+            `DTEND:${end}`,
+            `SUMMARY:${titulo}`,
+            `DESCRIPTION:${descr}`,
+            `LOCATION:${loc}`,
+            "END:VEVENT",
+            "END:VCALENDAR",
+          ].join("\n");
+
+          const isAndroid = /Android/i.test(navigator.userAgent);
+          const isIOS = /iP(hone|ad|od)/i.test(navigator.userAgent);
+          const isMacTouch =
+            /Macintosh/i.test(navigator.userAgent) && "ontouchend" in document; // iPadOS desktop mode
+          const isApple = isIOS || isMacTouch;
+
+          const gcal = new URL("https://www.google.com/calendar/render");
+          gcal.searchParams.set("action", "TEMPLATE");
+          gcal.searchParams.set("text", titulo);
+          gcal.searchParams.set("dates", `${start}/${end}`);
+          gcal.searchParams.set("details", descr);
+          gcal.searchParams.set("location", loc);
+
+          if (isApple) {
+            const blob = new Blob([ics], {
+              type: "text/calendar;charset=utf-8",
+            });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "boda.ics";
+            document.body.appendChild(a);
+            a.click();
+            setTimeout(() => {
+              URL.revokeObjectURL(url);
+              a.remove();
+            }, 1500);
+          } else if (isAndroid) {
+            window.open(gcal.toString(), "_blank", "noopener");
+          } else {
+            window.open(gcal.toString(), "_blank", "noopener");
+            const blob = new Blob([ics], {
+              type: "text/calendar;charset=utf-8",
+            });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "boda.ics";
+            document.body.appendChild(a);
+            a.click();
+            setTimeout(() => {
+              URL.revokeObjectURL(url);
+              a.remove();
+            }, 1500);
+          }
+        }
+
+        clone.addEventListener("click", handler);
+      })();
     </script>
   </body>
 </html>
