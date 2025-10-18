@@ -288,9 +288,359 @@
         position: absolute;
         opacity: 0.5;
       }
+      /* ====== Intro Envelope/Card ====== */
+      .app {
+        opacity: 0;
+        transform: translateY(12px);
+        transition: opacity 0.5s ease, transform 0.5s ease;
+      }
+      body.loaded .app {
+        opacity: 1;
+        transform: none;
+      }
+      #intro {
+        position: fixed;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        background: radial-gradient(
+            1000px 600px at 50% -10%,
+            #1b1f3f55,
+            transparent 60%
+          ),
+          linear-gradient(180deg, var(--bg), var(--bg-2));
+        z-index: 9999;
+      }
+      #intro.hide {
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.6s ease;
+      }
+
+      .stage {
+        position: relative;
+        width: min(92vw, 520px);
+        height: min(70vh, 460px);
+        display: grid;
+        place-items: center;
+        perspective: 1200px;
+      }
+      .skip {
+        position: absolute;
+        bottom: 12px;
+        right: 12px;
+        font-size: 12px;
+      }
+
+      .paper {
+        /* textura de papel con fibras sutiles (sin imágenes) */
+        background: radial-gradient(
+            1200px 600px at -20% -30%,
+            #ffffff10,
+            transparent 60%
+          ),
+          radial-gradient(900px 900px at 120% 120%, #0000000f, transparent 60%),
+          linear-gradient(180deg, #f7f6f1, #f0eee6);
+        box-shadow: 0 1px 0 rgba(0, 0, 0, 0.05) inset,
+          0 8px 24px rgba(0, 0, 0, 0.25);
+        filter: saturate(0.96) contrast(1.01);
+      }
+
+      /* Sobre */
+      .envelope {
+        position: relative;
+        width: min(92%, 520px);
+        height: min(60vh, 360px);
+        border-radius: 12px;
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        background: linear-gradient(160deg, #e6e0d0, #dad2bf);
+        box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
+        overflow: hidden;
+      }
+      .envelope::after {
+        /* borde interior */
+        content: "";
+        position: absolute;
+        inset: 8px;
+        border: 1px dashed rgba(0, 0, 0, 0.08);
+        border-radius: 8px;
+        pointer-events: none;
+      }
+      .envelope .flap {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        height: 50%;
+        background: linear-gradient(180deg, #d9d1be, #cfc7b4);
+        clip-path: polygon(0 0, 100% 0, 50% 100%);
+        transform-origin: top center;
+        transform: rotateX(0deg);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+      }
+
+      /* Tarjeta 3D */
+      .card3d {
+        position: absolute;
+        left: 50%;
+        top: 58%;
+        width: min(86%, 420px);
+        height: min(60%, 260px);
+        transform: translate(-50%, -50%);
+        transform-style: preserve-3d;
+        transition: transform 0.9s ease;
+      }
+      .card3d .face {
+        position: absolute;
+        inset: 0;
+        border-radius: 16px;
+        border: 1px solid rgba(0, 0, 0, 0.12);
+        backface-visibility: hidden;
+      }
+      .card3d .front {
+        background: linear-gradient(145deg, #fff, #f5f3eb);
+      }
+      .card3d .back {
+        transform: rotateY(180deg);
+        background: repeating-linear-gradient(
+            90deg,
+            #f7f5ed 0 12px,
+            #f3f1e9 12px 24px
+          ),
+          linear-gradient(180deg, #f3f1e9, #ece9df);
+      }
+      .card3d .card-content {
+        padding: 22px 22px 18px;
+        color: #2a2a2a;
+        text-align: center;
+        font-family: "Playfair Display", serif;
+      }
+      .card3d .mini-title {
+        font: 600 13px Poppins, system-ui;
+        letter-spacing: 1.6px;
+        text-transform: uppercase;
+        color: #666;
+      }
+      .card3d h3 {
+        margin: 8px 0 6px;
+        font-size: clamp(22px, 3.2vw, 28px);
+      }
+      .card3d p {
+        margin: 2px 0;
+        color: #444;
+        font: 500 14px Poppins, system-ui;
+      }
+      .back-hint {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        color: #333;
+        font: 600 13px Poppins, system-ui;
+        opacity: 0.8;
+      }
+
+      /* Estados de animación (aplicados por JS) */
+      .intro.open .flap {
+        transition: transform 0.7s ease;
+        transform: rotateX(160deg);
+      }
+      .intro.pull .card3d {
+        transition: transform 0.9s cubic-bezier(0.2, 0.8, 0.2, 1);
+        transform: translate(-50%, -115%) rotateY(0deg);
+      }
+      .intro.flip .card3d {
+        transform: translate(-50%, -115%) rotateY(180deg);
+      }
+
+      /* Reduce motion: si el usuario prefiere menos animaciones, saltamos directo */
+      @media (prefers-reduced-motion: reduce) {
+        .intro,
+        .card3d,
+        .flap {
+          transition: none !important;
+          animation: none !important;
+        }
+      }
+      /* ====== Loader circular en el reverso ====== */
+      .loader {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 42px;
+        height: 42px;
+        margin: -21px 0 0 -21px;
+        border: 3px solid rgba(0, 0, 0, 0.12);
+        border-top-color: rgba(0, 0, 0, 0.45);
+        border-radius: 50%;
+        animation: spin 0.9s linear infinite;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* Disolver el fondo de la intro cuando empieza el morph */
+      .intro.dim {
+        transition: background 0.6s ease, opacity 0.6s ease;
+        background: transparent;
+      }
+
+      /* Clon en morph: estilo base (se ajusta por JS) */
+      .morph-clone {
+        position: fixed;
+        left: 0;
+        top: 0;
+        will-change: transform, width, height, border-radius, opacity;
+        z-index: 10000;
+        transform-origin: center center;
+        pointer-events: none;
+      }
+
+      /* Seguridad para el header destino durante el morph */
+      .hero.morph-target {
+        position: relative;
+        isolation: isolate; /* evita z-index raros con sombras del clon */
+      }
+
+      /* Cuando el clon ya “encaja”, suaviza las esquinas a las del header */
+      .morphing-rounded {
+        border-radius: 24px !important;
+      }
+
+      /* Prefiere menos movimiento: eliminar transiciones complejas */
+      @media (prefers-reduced-motion: reduce) {
+        .morph-clone {
+          transition: none !important;
+        }
+        .intro.dim {
+          transition: none !important;
+        }
+      }
+      /* Estructura por capas del sobre */
+      .envelope {
+        position: relative;
+        width: min(92%, 520px);
+        height: min(60vh, 360px);
+        border-radius: 12px;
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        background: linear-gradient(160deg, #e6e0d0, #dad2bf);
+        box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
+        overflow: hidden; /* importante para ocultar tarjeta dentro */
+      }
+      .env-back,
+      .env-front,
+      .flap {
+        position: absolute;
+        inset: 0;
+      }
+
+      /* Fondo del sobre (detrás de la tarjeta) */
+      .env-back {
+        z-index: 1;
+        background: radial-gradient(
+            700px 300px at 50% -10%,
+            #ffffff33 0%,
+            transparent 60%
+          ),
+          linear-gradient(180deg, #e7deca, #d9cfbb);
+      }
+
+      /* Frente del sobre (delante de la tarjeta): tapa la tarjeta mientras sale */
+      .env-front {
+        z-index: 3;
+        background: linear-gradient(180deg, #e3dac5, #d7cdb8);
+        /* simulamos el “borde” superior de la boca del sobre usando clip-path */
+        clip-path: polygon(
+          0% 24%,
+          50% 34%,
+          100% 24%,
+          /* borde “boca” con ligera caída al centro */ 100% 100%,
+          0% 100%
+        );
+        border-top: 1px solid rgba(0, 0, 0, 0.06);
+        box-shadow: inset 0 10px 18px rgba(0, 0, 0, 0.12),
+          0 -2px 6px rgba(0, 0, 0, 0.05);
+        pointer-events: none; /* no bloquear clics del botón Saltar */
+      }
+
+      /* Solapa por encima de todo (abre hacia atrás con rotateX) */
+      .envelope .flap {
+        z-index: 4;
+        left: 0;
+        right: 0;
+        top: 0;
+        height: 52%;
+        background: linear-gradient(180deg, #d9d1be, #cfc7b4);
+        clip-path: polygon(0 0, 100% 0, 50% 100%);
+        transform-origin: top center;
+        transform: rotateX(0deg);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+        pointer-events: none;
+      }
+
+      /* Tarjeta entre back y front (se ve “adentro”) */
+      .card3d {
+        position: absolute;
+        left: 50%;
+        /* Arranca más abajo y más “metida” en el sobre */
+        top: 72%;
+        width: min(86%, 420px);
+        height: min(60%, 260px);
+        transform: translate(-50%, -40%) rotateY(0deg);
+        transform-style: preserve-3d;
+        transition: transform 0.9s ease;
+        z-index: 2; /* <-- entre env-back (1) y env-front (3) */
+      }
+
+      /* Cuando sacamos la tarjeta (estado .pull), que suba claramente fuera del sobre */
+      .intro.pull .card3d {
+        transition: transform 0.9s cubic-bezier(0.2, 0.8, 0.2, 1);
+        transform: translate(-50%, -120%) rotateY(0deg);
+      }
+
+      /* El resto de estilos de .face, .front, .back continúa igual… */
     </style>
   </head>
   <body>
+    <!-- INTRO: Carta -> Tarjeta con flip -->
+    <div id="intro" class="intro" aria-label="Carta de amor">
+      <div class="stage" role="img" aria-label="Sobre y tarjeta de invitación">
+        <div class="envelope paper">
+          <!-- Panel de fondo del sobre (detrás de la tarjeta) -->
+          <div class="env-back" aria-hidden="true"></div>
+          <div class="card3d" aria-label="Tarjeta invitación">
+            <div class="face front paper">
+              <div class="card-content">
+                <div class="mini-title">Invitación</div>
+                <h3 id="card-nombres">[Nombres]</h3>
+                <p id="card-fecha">[Fecha legible]</p>
+                <p id="card-lugar">[Lugar]</p>
+              </div>
+            </div>
+            <div class="face back paper">
+              <div class="back-hint">Cargando contenido…</div>
+              <div class="loader" aria-hidden="true"></div>
+            </div>
+          </div>
+
+          <!-- Panel frontal del sobre (delante de la tarjeta) -->
+          <div class="env-front" aria-hidden="true"></div>
+
+          <!-- Solapa del sobre (encima de todo) -->
+          <div class="flap"></div>
+        </div>
+        <button
+          class="skip btn btn-ghost"
+          type="button"
+          aria-label="Saltar animación"
+        >
+          Saltar animación
+        </button>
+      </div>
+    </div>
+
     <div class="wrap">
       <header class="hero" aria-labelledby="tituloppal">
         <!-- Adorno simple -->
@@ -766,6 +1116,175 @@
             alert("Este botón está configurado solo para iPhone y Android.");
           }
         });
+      })();
+    </script>
+    <script>
+      (function () {
+        const INVITACION = {
+          novios: "Jessica Gutierrez ",
+          novia: "Mariano Barajas ",
+          // Fecha/Hora de la ceremonia (zona horaria del visitante)
+          // Formato: AAAA-MM-DDTHH:mm (24h)
+          fechaISO: "2025-12-27T15:00",
+          lugar: {
+            nombre: "Quinta Sofia",
+            direccion:
+              "Libertad 150, Los Agricultores de Ocotlán, 47980 Ocotlán, Jal",
+          },
+        };
+        const intro = document.getElementById("intro");
+        const skipBtn = intro?.querySelector(".skip");
+        const prefersReduce = window.matchMedia(
+          "(prefers-reduced-motion: reduce)"
+        ).matches;
+        const hero = document.querySelector("header.hero");
+
+        function showAppNow() {
+          document.body.classList.add("loaded");
+          intro?.classList.add("hide");
+          setTimeout(() => {
+            intro?.remove();
+          }, 650);
+        }
+
+        function fillCardFromData() {
+          try {
+            const nombres = [
+              INVITACION?.novios?.trim(),
+              INVITACION?.novia?.trim(),
+            ]
+              .filter(Boolean)
+              .join(" & ");
+            const f = new Date(INVITACION?.fechaISO || Date.now());
+            const fechaLegible = new Intl.DateTimeFormat("es-MX", {
+              weekday: "long",
+              day: "2-digit",
+              month: "long",
+              year: "numeric",
+              hour: "2-digit",
+              minute: "2-digit",
+            }).format(f);
+
+            document.getElementById("card-nombres").textContent = nombres ||
+              "Nuestra Boda";
+            document.getElementById("card-fecha").textContent =
+              fechaLegible.replace(",", " ·");
+            document.getElementById("card-lugar").textContent =
+              INVITACION?.lugar?.nombre || "Lugar por confirmar";
+          } catch (e) {
+            /* no-op */
+          }
+        }
+
+        // Calcula transform para que A encaje exactamente sobre B
+        function computeTransform(fromRect, toRect) {
+          const scaleX = toRect.width / fromRect.width;
+          const scaleY = toRect.height / fromRect.height;
+          const translateX =
+            toRect.left +
+            toRect.width / 2 -
+            (fromRect.left + fromRect.width / 2);
+          const translateY =
+            toRect.top +
+            toRect.height / 2 -
+            (fromRect.top + fromRect.height / 2);
+          return { translateX, translateY, scaleX, scaleY };
+        }
+
+        // Hace un morph de la tarjeta hacía el header.hero
+        function morphToHeader() {
+          const card = intro.querySelector(".card3d");
+          if (!card || !hero) {
+            document.body.classList.add("loaded");
+            return;
+          }
+
+          // Señalamos el header como destino
+          hero.classList.add("morph-target");
+
+          // Tomamos el reverso como “cara visible” al momento del morph
+          const fromRect = card.getBoundingClientRect();
+          const toRect = hero.getBoundingClientRect();
+
+          // Creamos un clon visual del card3d (incluyendo estilos)
+          const clone = card.cloneNode(true);
+          clone.classList.add("morph-clone", "paper");
+          // fijamos tamaño y posición inicial idénticos
+          Object.assign(clone.style, {
+            left: fromRect.left + "px",
+            top: fromRect.top + "px",
+            width: fromRect.width + "px",
+            height: fromRect.height + "px",
+            transform: "translate3d(0,0,0) rotateY(180deg)", // ya está volteada
+            borderRadius: getComputedStyle(card).borderRadius,
+            transition:
+              "transform .85s cubic-bezier(.2,.8,.2,1), border-radius .85s ease, opacity .85s ease",
+          });
+
+          document.body.appendChild(clone);
+
+          // Opcional: ocultamos la tarjeta original para que no “duplique”
+          card.style.visibility = "hidden";
+
+          // Disolvemos el fondo de la intro
+          intro.classList.add("dim");
+
+          // Forzamos reflow para que la transición tome la posición inicial
+          clone.getBoundingClientRect();
+
+          // Calculamos transform objetivo
+          const { translateX, translateY, scaleX, scaleY } = computeTransform(
+            fromRect,
+            toRect
+          );
+
+          // Aplicamos transform hacia el header
+          clone.classList.add("morphing-rounded");
+          clone.style.transform = `translate3d(${translateX}px, ${translateY}px, 0) scale(${scaleX}, ${scaleY}) rotateY(180deg)`;
+
+          // Al terminar la transición: mostramos app y retiramos intro/clone
+          const onDone = () => {
+            clone.removeEventListener("transitionend", onDone);
+            clone.remove();
+            document.body.classList.add("loaded"); // ahora ya se ve tu .app y el hero
+            intro.classList.add("hide");
+            setTimeout(() => {
+              intro.remove();
+            }, 450);
+          };
+          clone.addEventListener("transitionend", onDone);
+        }
+
+        function runAnimation() {
+          if (!intro) return showAppNow();
+          if (prefersReduce) return showAppNow();
+
+          fillCardFromData();
+
+          // Paso 1: abrir solapa
+          intro.classList.add("open");
+
+          // Paso 2: sacar tarjeta
+          setTimeout(() => {
+            intro.classList.add("pull");
+          }, 750);
+
+          // Paso 3: giro a reverso
+          setTimeout(() => {
+            intro.classList.add("flip");
+          }, 1750);
+
+          // Paso 4: simulamos breve carga en el reverso y luego morph
+          setTimeout(() => {
+            morphToHeader();
+          }, 2450); // ~700ms de “loader” visible tras el flip
+        }
+
+        // Botón "Saltar"
+        skipBtn?.addEventListener("click", showAppNow);
+
+        // Iniciar cuando todo cargue (para tener INVITACION listo)
+        window.addEventListener("load", runAnimation);
       })();
     </script>
   </body>
