@@ -3,19 +3,33 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Invitación Boda Civil — [Tu Nombre] & [Su Nombre]</title>
+    <title>Invitación Boda Civil — Jessica Gutierrez & Mariano Barajas</title>
     <meta
       name="description"
       content="Acompáñanos a celebrar nuestra boda civil. Toda la información: fecha, lugar, itinerario y confirmación de asistencia (RSVP)."
     />
-    <meta property="og:title" content="Invitación Boda Civil" />
+
+    <!-- Open Graph / Twitter -->
+    <meta
+      property="og:title"
+      content="Invitación Boda Civil — Jessica & Mariano"
+    />
     <meta
       property="og:description"
       content="Acompáñanos a celebrar nuestra boda civil."
     />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="" />
-    <!-- Opcional: URL de portada -->
+    <meta property="og:image" content="#" />
+    <meta property="og:locale" content="es_MX" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Invitación Boda Civil — Jessica & Mariano"
+    />
+    <meta name="twitter:description" content="Toda la información y RSVP." />
+    <meta name="twitter:image" content="#" />
+    <link rel="canonical" href="#" />
+
     <meta name="theme-color" content="#6b5bff" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -23,14 +37,38 @@
       href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400;500;600&display=swap"
       rel="stylesheet"
     />
+
+    <!-- Datos estructurados del evento -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Event",
+        "name": "Boda civil: Jessica Gutierrez & Mariano Barajas",
+        "startDate": "2026-01-03T15:00:00-06:00",
+        "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+        "eventStatus": "https://schema.org/EventScheduled",
+        "location": {
+          "@type": "Place",
+          "name": "Quinta Sofia",
+          "address": "Libertad 150, Los Agricultores de Ocotlán, 47980 Ocotlán, Jal"
+        },
+        "image": ["#"],
+        "description": "Invitación a nuestra boda civil. Itinerario y confirmación (RSVP).",
+        "organizer": {
+          "@type": "Person",
+          "name": "Jessica Gutierrez y Mariano Barajas"
+        }
+      }
+    </script>
+
     <style>
       :root {
         --bg: #0f1221;
         --bg-2: #121631;
         --txt: #f4f6ff;
         --muted: #b8bce6;
-        --brand: #8b7bff; /* primario */
-        --brand-2: #67d6ff; /* acento */
+        --brand: #8b7bff;
+        --brand-2: #67d6ff;
         --card: rgba(255, 255, 255, 0.06);
         --ring: rgba(139, 123, 255, 0.35);
       }
@@ -61,6 +99,7 @@
         margin: 0 auto;
         padding: 24px;
       }
+
       header.hero {
         position: relative;
         overflow: hidden;
@@ -131,6 +170,14 @@
         color: var(--txt);
         border: 1px solid rgba(255, 255, 255, 0.12);
       }
+      .btn:focus-visible {
+        outline: 2px solid var(--brand-2);
+        outline-offset: 2px;
+      }
+      .btn-ghost:hover {
+        background: rgba(255, 255, 255, 0.12);
+      }
+
       section {
         margin-top: 28px;
       }
@@ -167,6 +214,7 @@
       .muted {
         color: var(--muted);
       }
+
       .countdown {
         display: flex;
         flex-wrap: wrap;
@@ -191,6 +239,7 @@
         letter-spacing: 0.3px;
         color: var(--muted);
       }
+
       .timeline {
         list-style: none;
         margin: 0;
@@ -207,12 +256,14 @@
       .timeline time {
         font-weight: 600;
       }
+
       iframe.map {
         width: 100%;
         height: 320px;
         border: 0;
         border-radius: 14px;
       }
+
       form .row {
         display: grid;
         gap: 12px;
@@ -248,6 +299,7 @@
         font-size: 14px;
         color: var(--muted);
       }
+
       .gallery {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
@@ -278,6 +330,7 @@
         display: inline-block;
         margin: 6px 8px 0 0;
       }
+
       .floating-leaves {
         position: absolute;
         inset: 0;
@@ -288,6 +341,7 @@
         position: absolute;
         opacity: 0.5;
       }
+
       /* ====== Intro Envelope/Card ====== */
       .app {
         opacity: 0;
@@ -298,6 +352,7 @@
         opacity: 1;
         transform: none;
       }
+
       #intro {
         position: fixed;
         inset: 0;
@@ -323,7 +378,7 @@
         height: min(70vh, 460px);
         display: grid;
         place-items: center;
-        perspective: 1200px;
+        perspective: 1400px;
       }
       .skip {
         position: absolute;
@@ -333,7 +388,6 @@
       }
 
       .paper {
-        /* textura de papel con fibras sutiles (sin imágenes) */
         background: radial-gradient(
             1200px 600px at -20% -30%,
             #ffffff10,
@@ -358,7 +412,6 @@
         overflow: hidden;
       }
       .envelope::after {
-        /* borde interior */
         content: "";
         position: absolute;
         inset: 8px;
@@ -366,6 +419,8 @@
         border-radius: 8px;
         pointer-events: none;
       }
+
+      /* Solapa */
       .envelope .flap {
         position: absolute;
         left: 0;
@@ -378,17 +433,79 @@
         transform: rotateX(0deg);
         box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
       }
+      .envelope .flap::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        clip-path: inherit;
+        background: linear-gradient(
+          180deg,
+          rgba(0, 0, 0, 0.14),
+          transparent 40%
+        );
+        opacity: 0;
+        transition: opacity 0.45s ease;
+      }
+      .intro.open .flap::after {
+        opacity: 0.5;
+      }
 
-      /* Tarjeta 3D */
+      .env-back,
+      .env-front,
+      .flap {
+        position: absolute;
+        inset: 0;
+      }
+      .env-back {
+        z-index: 1;
+        background: radial-gradient(
+            700px 300px at 50% -10%,
+            #ffffff33 0%,
+            transparent 60%
+          ),
+          linear-gradient(180deg, #e7deca, #d9cfbb);
+      }
+      .env-front {
+        z-index: 3;
+        background: linear-gradient(180deg, #e3dac5, #d7cdb8);
+        clip-path: polygon(0% 36%, 50% 46%, 100% 36%, 100% 100%, 0% 100%);
+        border-top: 1px solid rgba(0, 0, 0, 0.06);
+        box-shadow: inset 0 10px 18px rgba(0, 0, 0, 0.12),
+          0 -2px 6px rgba(0, 0, 0, 0.05);
+        pointer-events: none;
+      }
+      .env-front::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        clip-path: inherit;
+        background: radial-gradient(
+              circle at 25% 30%,
+              rgba(0, 0, 0, 0.06) 0 1px,
+              transparent 1px
+            )
+            0 0/8px 8px,
+          linear-gradient(
+            180deg,
+            rgba(255, 255, 255, 0.25),
+            rgba(0, 0, 0, 0.04)
+          );
+        mix-blend-mode: multiply;
+        opacity: 0.28;
+        pointer-events: none;
+      }
+
       .card3d {
         position: absolute;
         left: 50%;
-        top: 58%;
+        top: 78%;
         width: min(86%, 420px);
         height: min(60%, 260px);
-        transform: translate(-50%, -50%);
+        transform: translate3d(-50%, -48%, 0) rotateY(0deg);
         transform-style: preserve-3d;
         transition: transform 0.9s ease;
+        z-index: 2;
+        will-change: transform;
       }
       .card3d .face {
         position: absolute;
@@ -440,20 +557,19 @@
         opacity: 0.8;
       }
 
-      /* Estados de animación (aplicados por JS) */
       .intro.open .flap {
         transition: transform 0.7s ease;
         transform: rotateX(160deg);
       }
       .intro.pull .card3d {
         transition: transform 0.9s cubic-bezier(0.2, 0.8, 0.2, 1);
-        transform: translate(-50%, -115%) rotateY(0deg);
+        transform: translate3d(-50%, -135%, 0) rotateY(0deg);
+        box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
       }
       .intro.flip .card3d {
-        transform: translate(-50%, -115%) rotateY(180deg);
+        transform: translate3d(-50%, -135%, 0) rotateY(180deg);
       }
 
-      /* Reduce motion: si el usuario prefiere menos animaciones, saltamos directo */
       @media (prefers-reduced-motion: reduce) {
         .intro,
         .card3d,
@@ -462,7 +578,7 @@
           animation: none !important;
         }
       }
-      /* ====== Loader circular en el reverso ====== */
+
       .loader {
         position: absolute;
         left: 50%;
@@ -481,13 +597,11 @@
         }
       }
 
-      /* Disolver el fondo de la intro cuando empieza el morph */
       .intro.dim {
         transition: background 0.6s ease, opacity 0.6s ease;
         background: transparent;
       }
 
-      /* Clon en morph: estilo base (se ajusta por JS) */
       .morph-clone {
         position: fixed;
         left: 0;
@@ -497,110 +611,109 @@
         transform-origin: center center;
         pointer-events: none;
       }
-
-      /* Seguridad para el header destino durante el morph */
       .hero.morph-target {
         position: relative;
-        isolation: isolate; /* evita z-index raros con sombras del clon */
+        isolation: isolate;
       }
-
-      /* Cuando el clon ya “encaja”, suaviza las esquinas a las del header */
       .morphing-rounded {
         border-radius: 24px !important;
       }
 
-      /* Prefiere menos movimiento: eliminar transiciones complejas */
       @media (prefers-reduced-motion: reduce) {
-        .morph-clone {
-          transition: none !important;
-        }
+        .morph-clone,
         .intro.dim {
           transition: none !important;
         }
       }
-      /* Estructura por capas del sobre */
-      .envelope {
+      .card3d.style-polaroid .face {
+        border-radius: 22px;
+      }
+      .card3d.style-polaroid .front {
+        background: #ffffff;
         position: relative;
-        width: min(92%, 520px);
-        height: min(60vh, 360px);
-        border-radius: 12px;
-        border: 1px solid rgba(0, 0, 0, 0.08);
-        background: linear-gradient(160deg, #e6e0d0, #dad2bf);
-        box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
-        overflow: hidden; /* importante para ocultar tarjeta dentro */
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.18);
       }
-      .env-back,
-      .env-front,
-      .flap {
+      .card3d.style-polaroid .front::before {
+        content: "";
         position: absolute;
-        inset: 0;
+        inset: 14px 14px 42px 14px;
+        border-radius: 14px;
+        background: linear-gradient(180deg, #fafafa, #f4f4f4);
+        box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.06);
       }
-
-      /* Fondo del sobre (detrás de la tarjeta) */
-      .env-back {
+      .card3d.style-polaroid .front .card-content {
+        position: relative;
         z-index: 1;
-        background: radial-gradient(
-            700px 300px at 50% -10%,
-            #ffffff33 0%,
-            transparent 60%
-          ),
-          linear-gradient(180deg, #e7deca, #d9cfbb);
+        padding: 24px 24px 14px;
+      }
+      .card3d.style-polaroid .front .mini-title {
+        letter-spacing: 1.8px;
+      }
+      .card3d.style-polaroid .front h3 {
+        font-size: clamp(22px, 3.2vw, 30px);
+      }
+      .card3d.style-polaroid .back {
+        border-radius: 22px;
       }
 
-      /* Frente del sobre (delante de la tarjeta): tapa la tarjeta mientras sale */
-      .env-front {
-        z-index: 3;
-        background: linear-gradient(180deg, #e3dac5, #d7cdb8);
-        /* simulamos el “borde” superior de la boca del sobre usando clip-path */
-        clip-path: polygon(
-          0% 24%,
-          50% 34%,
-          100% 24%,
-          /* borde “boca” con ligera caída al centro */ 100% 100%,
-          0% 100%
+      .card3d.style-gold .face {
+        border: 1px solid #d8b64b;
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35),
+          0 6px 18px rgba(0, 0, 0, 0.18);
+      }
+      .card3d.style-gold .face::after {
+        content: "";
+        position: absolute;
+        left: 12px;
+        right: 12px;
+        top: 10px;
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.6),
+          transparent
         );
-        border-top: 1px solid rgba(0, 0, 0, 0.06);
-        box-shadow: inset 0 10px 18px rgba(0, 0, 0, 0.12),
-          0 -2px 6px rgba(0, 0, 0, 0.05);
-        pointer-events: none; /* no bloquear clics del botón Saltar */
-      }
-
-      /* Solapa por encima de todo (abre hacia atrás con rotateX) */
-      .envelope .flap {
-        z-index: 4;
-        left: 0;
-        right: 0;
-        top: 0;
-        height: 52%;
-        background: linear-gradient(180deg, #d9d1be, #cfc7b4);
-        clip-path: polygon(0 0, 100% 0, 50% 100%);
-        transform-origin: top center;
-        transform: rotateX(0deg);
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
         pointer-events: none;
       }
-
-      /* Tarjeta entre back y front (se ve “adentro”) */
-      .card3d {
-        position: absolute;
-        left: 50%;
-        /* Arranca más abajo y más “metida” en el sobre */
-        top: 72%;
-        width: min(86%, 420px);
-        height: min(60%, 260px);
-        transform: translate(-50%, -40%) rotateY(0deg);
-        transform-style: preserve-3d;
-        transition: transform 0.9s ease;
-        z-index: 2; /* <-- entre env-back (1) y env-front (3) */
+      .card3d.style-polaroid.style-gold .front::before {
+        inset: 15px 15px 43px 15px;
+      }
+      .card3d.style-gold .back {
+        border-color: #d8b64b;
       }
 
-      /* Cuando sacamos la tarjeta (estado .pull), que suba claramente fuera del sobre */
-      .intro.pull .card3d {
-        transition: transform 0.9s cubic-bezier(0.2, 0.8, 0.2, 1);
-        transform: translate(-50%, -120%) rotateY(0deg);
+      /* utilidades accesibles */
+      .sr-only {
+        position: absolute !important;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+      /* Al terminar, la intro se desvanece */
+      #intro.fade-out {
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.85s ease;
       }
 
-      /* El resto de estilos de .face, .front, .back continúa igual… */
+      /* En el reverso, ocultamos loader/texto tras el flip */
+      .intro.flip .loader,
+      .intro.flip .back-hint {
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      /* Quitamos la “sensación de irse” (mantén la carta estática una vez volteada) */
+      .intro.flip .card3d {
+        /* ya tienes el rotateY(180deg); solo nos aseguramos de que no haya traslaciones extra */
+        transform: translate3d(-50%, -135%, 0) rotateY(180deg);
+      }
     </style>
   </head>
   <body>
@@ -608,9 +721,12 @@
     <div id="intro" class="intro" aria-label="Carta de amor">
       <div class="stage" role="img" aria-label="Sobre y tarjeta de invitación">
         <div class="envelope paper">
-          <!-- Panel de fondo del sobre (detrás de la tarjeta) -->
           <div class="env-back" aria-hidden="true"></div>
-          <div class="card3d" aria-label="Tarjeta invitación">
+
+          <div
+            class="card3d style-polaroid style-gold"
+            aria-label="Tarjeta invitación"
+          >
             <div class="face front paper">
               <div class="card-content">
                 <div class="mini-title">Invitación</div>
@@ -625,12 +741,10 @@
             </div>
           </div>
 
-          <!-- Panel frontal del sobre (delante de la tarjeta) -->
           <div class="env-front" aria-hidden="true"></div>
-
-          <!-- Solapa del sobre (encima de todo) -->
           <div class="flap"></div>
         </div>
+
         <button
           class="skip btn btn-ghost"
           type="button"
@@ -641,9 +755,8 @@
       </div>
     </div>
 
-    <div class="wrap">
+    <div class="wrap app">
       <header class="hero" aria-labelledby="tituloppal">
-        <!-- Adorno simple -->
         <svg
           class="floating-leaves"
           viewBox="0 0 600 300"
@@ -668,7 +781,6 @@
           />
         </svg>
         <span class="chip" role="note" aria-label="Boda civil">
-          <!-- icono anillos -->
           <svg
             width="16"
             height="16"
@@ -689,6 +801,7 @@
         <p class="sub" id="fecha-legible">
           Sábado 20 de diciembre de 2025 · 5:30 p.m.
         </p>
+
         <div class="countdown" aria-label="Cuenta regresiva">
           <div class="timebox" aria-live="polite">
             <div class="num" id="dd">00</div>
@@ -707,6 +820,7 @@
             <div class="lbl">Seg</div>
           </div>
         </div>
+
         <p class="sub">Favor de confirmar asistencia</p>
         <div class="cta">
           <a class="btn btn-primary" href="#rsvp">Confirmar asistencia</a>
@@ -716,9 +830,10 @@
         </div>
       </header>
 
-      <!-- Datos principales -->
-      <section class="grid grid-1" aria-labelledby="datos">
+      <!-- Intro texto (id único para aria-labelledby) -->
+      <section class="grid grid-1" aria-labelledby="intro-texto">
         <article class="card">
+          <h2 id="intro-texto" class="sr-only">Introducción</h2>
           <p>
             El amor, cuando es verdadero, se reconoce en la calma de una mirada,
             en la complicidad de un gesto y en la certeza de un “para siempre”
@@ -734,9 +849,10 @@
           </p>
         </article>
       </section>
-      <section class="grid grid-3" aria-labelledby="datos">
+
+      <section class="grid grid-3" aria-labelledby="detalles-titulo">
         <article class="card">
-          <h2 id="datos">Detalles</h2>
+          <h2 id="detalles-titulo">Detalles</h2>
           <p>
             <strong>Fecha:</strong>
             <span id="fecha-texto">20 de diciembre de 2025</span>
@@ -750,6 +866,7 @@
           </p>
           <p class="note">Por favor llega con 15 minutos de anticipación.</p>
         </article>
+
         <article class="card">
           <h2>Dress code</h2>
           <p>Formal/Coctel. Colores sugeridos: neutros y tonos azules.</p>
@@ -789,33 +906,40 @@
             Te esperamos en <strong id="lugar-nombre-2">Salón Aurora</strong>.
             Usa el mapa para trazar tu ruta.
           </p>
-          <!-- Reemplaza el src del iframe con el de tu lugar -->
           <iframe
             class="map"
+            title="Mapa para llegar a Quinta Sofia"
             loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
             allowfullscreen
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3741.5970360311803!2d-102.77218802404289!3d20.3169400118447!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x842edf23424a7569%3A0xa890ee036bc35e85!2sQuinta%20Sofia!5e0!3m2!1ses-419!2smx!4v1760655583722!5m2!1ses-419!2smx"
-          ></iframe>
+          >
+          </iframe>
           <p class="note">Estacionamiento disponible frente al recinto.</p>
         </article>
+
         <article class="card">
           <h2>Galería</h2>
           <div class="gallery" aria-label="Galería de fotos">
             <img
               src="https://images.unsplash.com/photo-1520975922284-8b456906c813?q=80&w=1200&auto=format&fit=crop"
               alt="Anillos de boda sobre flores"
+              loading="lazy"
             />
             <img
               src="https://images.unsplash.com/photo-1520967824495-b529aeba26dc?q=80&w=1200&auto=format&fit=crop"
               alt="Decoración elegante en tonos azules"
+              loading="lazy"
             />
             <img
               src="https://images.unsplash.com/photo-1521334726092-b509a19597d2?q=80&w=1200&auto=format&fit=crop"
               alt="Copa de brindis"
+              loading="lazy"
             />
             <img
               src="https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1200&auto=format&fit=crop"
               alt="Detalle floral del evento"
+              loading="lazy"
             />
           </div>
         </article>
@@ -825,7 +949,6 @@
       <section id="rsvp" class="card" aria-labelledby="confirma">
         <h2 id="confirma">Confirmación de asistencia (RSVP)</h2>
         <p class="muted">Tu respuesta nos ayuda a planear mejor. ¡Gracias!</p>
-        <!-- Opción 1: usa Formspree (reemplaza TU_ID) -->
         <form action="https://formspree.io/f/TU_ID" method="POST">
           <div class="row">
             <div>
@@ -836,6 +959,7 @@
                 type="text"
                 placeholder="Ejem: Ana Pérez"
                 required
+                autocomplete="name"
               />
             </div>
             <div>
@@ -845,6 +969,8 @@
                 name="telefono"
                 type="tel"
                 placeholder="10 dígitos"
+                inputmode="tel"
+                autocomplete="tel"
                 pattern="[0-9\s\-\+]{8,}"
               />
             </div>
@@ -865,7 +991,7 @@
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
-                <option value="5">4</option>
+                <option value="4">4</option>
                 <option value="5">5</option>
                 <option value="6">6</option>
                 <option value="7">7</option>
@@ -884,6 +1010,16 @@
               placeholder="Opcional"
             ></textarea>
           </div>
+
+          <!-- Honeypot anti-bots -->
+          <input
+            type="text"
+            name="_gotcha"
+            style="display: none"
+            tabindex="-1"
+            autocomplete="off"
+          />
+
           <div
             style="
               display: flex;
@@ -901,7 +1037,6 @@
             >
           </div>
         </form>
-        <!-- Opción 2: elimina 'action' y usa mailto:, o conecta a tu backend -->
       </section>
 
       <!-- Mesa de regalos / Nota -->
@@ -932,13 +1067,10 @@
 
     <script>
       // ============ CONFIG RÁPIDA ============
-      // Cambia estos datos y el resto del contenido se actualiza solo.
       const INVITACION = {
-        novios: "Jessica Gutierrez ",
-        novia: "Mariano Barajas ",
-        // Fecha/Hora de la ceremonia (zona horaria del visitante)
-        // Formato: AAAA-MM-DDTHH:mm (24h)
-        fechaISO: "2025-12-27T15:00",
+        novios: "Jessica Gutierrez",
+        novia: "Mariano Barajas",
+        fechaISO: "2026-01-03T15:00",
         lugar: {
           nombre: "Quinta Sofia",
           direccion:
@@ -956,7 +1088,7 @@
       document.getElementById("lugar-direccion").textContent =
         INVITACION.lugar.direccion;
 
-      // Formateo de fecha legible
+      // Formateo de fecha legible (hora local)
       const f = new Date(INVITACION.fechaISO);
       const fmt = new Intl.DateTimeFormat("es-MX", {
         weekday: "long",
@@ -988,12 +1120,13 @@
         ss = document.getElementById("ss");
       function tick() {
         const now = new Date();
-        const t = f - now; // ms
+        const t = f - now;
         if (t <= 0) {
-          dd.textContent = "00";
-          hh.textContent = "00";
-          mm.textContent = "00";
-          ss.textContent = "00";
+          dd.textContent =
+            hh.textContent =
+            mm.textContent =
+            ss.textContent =
+              "00";
           return;
         }
         const sec = Math.floor(t / 1000) % 60;
@@ -1009,51 +1142,41 @@
       setInterval(tick, 1000);
     </script>
 
+    <!-- Calendario con soporte iOS, Android y escritorio + ICS con CRLF -->
     <script>
       (function () {
-        const btn =
-          document.getElementById && document.getElementById("btnCal");
+        const btn = document.getElementById("btnCal");
         if (!btn) return;
 
-        // Reemplaza listeners previos
         const clone = btn.cloneNode(true);
         btn.parentNode && btn.parentNode.replaceChild(clone, btn);
 
-        // Configuración rápida
-        const DURATION_MIN = 480; // cambia la duración si lo deseas
-
-        // Fecha del evento
+        const DURATION_MIN = 480; // 8h
         const eventDate =
           typeof f !== "undefined" && f instanceof Date
             ? f
-            : typeof INVITACION !== "undefined" && INVITACION.fechaISO
-            ? new Date(INVITACION.fechaISO)
-            : new Date();
+            : new Date(INVITACION.fechaISO);
 
-        function fmtTimes() {
-          const startISO = eventDate.toISOString();
+        function fmtTimesUTC() {
+          const startISO = new Date(eventDate).toISOString();
           const endISO = new Date(
             eventDate.getTime() + DURATION_MIN * 60000
           ).toISOString();
           const start = startISO.replace(/[-:]/g, "").split(".")[0] + "Z";
           const end = endISO.replace(/[-:]/g, "").split(".")[0] + "Z";
-          return { startISO, endISO, start, end };
+          return { start, end };
         }
 
         function meta() {
           const titulo =
-            typeof INVITACION !== "undefined"
-              ? `Boda civil: ${INVITACION.novios} & ${INVITACION.novia}`
-              : "Boda civil";
+            `Boda civil: ${INVITACION.novios} & ${INVITACION.novia}`.trim();
           const descr = "¡Acompáñanos a celebrar este momento especial!";
-          const loc =
-            typeof INVITACION !== "undefined"
-              ? `${INVITACION.lugar.nombre} — ${INVITACION.lugar.direccion}`
-              : "Lugar por confirmar";
+          const loc = `${INVITACION.lugar.nombre} — ${INVITACION.lugar.direccion}`;
           return { titulo, descr, loc };
         }
 
         function buildICS(start, end, m) {
+          const CRLF = "\r\n";
           return [
             "BEGIN:VCALENDAR",
             "VERSION:2.0",
@@ -1068,70 +1191,60 @@
             `LOCATION:${m.loc}`,
             "END:VEVENT",
             "END:VCALENDAR",
-          ].join("\n");
+          ].join(CRLF);
         }
 
-        function openICSInline(ics) {
-          // iOS abre el visor de Calendario si navegamos a un .ics; no muestra descarga de archivos.
-          try {
-            const blob = new Blob([ics], {
-              type: "text/calendar;charset=utf-8",
-            });
-            const url = URL.createObjectURL(blob);
-            window.location.href = url; // usar misma pestaña evita bloqueos
-            setTimeout(() => URL.revokeObjectURL(url), 5000);
-          } catch (e) {
-            const dataUrl =
-              "data:text/calendar;charset=utf-8," + encodeURIComponent(ics);
-            window.location.href = dataUrl;
-          }
+        function downloadICS(ics) {
+          const blob = new Blob([ics], { type: "text/calendar;charset=utf-8" });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = "boda.ics";
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          setTimeout(() => URL.revokeObjectURL(url), 4000);
         }
 
-        function openGoogleCalendarInline(start, end, m) {
-          const gcal = new URL("https://calendar.google.com/calendar/render");
-          gcal.searchParams.set("action", "TEMPLATE");
-          gcal.searchParams.set("text", m.titulo);
-          gcal.searchParams.set("dates", `${start}/${end}`);
-          gcal.searchParams.set("details", m.descr);
-          gcal.searchParams.set("location", m.loc);
-          // Usar misma pestaña para minimizar pop-up blockers y favorecer la apertura de la app
-          window.location.href = gcal.toString();
+        function googleCalendarURL(start, end, m) {
+          const g = new URL("https://calendar.google.com/calendar/render");
+          g.searchParams.set("action", "TEMPLATE");
+          g.searchParams.set("text", m.titulo);
+          g.searchParams.set("dates", `${start}/${end}`);
+          g.searchParams.set("details", m.descr);
+          g.searchParams.set("location", m.loc);
+          return g.toString();
         }
-
-        const isAndroid = /Android/i.test(navigator.userAgent);
-        const isIOS =
-          /iP(hone|ad|od)/i.test(navigator.userAgent) ||
-          (/Macintosh/i.test(navigator.userAgent) && "ontouchend" in document); // iPadOS
 
         clone.addEventListener("click", function () {
-          const { start, end } = fmtTimes();
+          const { start, end } = fmtTimesUTC();
           const m = meta();
+          const ua = navigator.userAgent;
+          const isAndroid = /Android/i.test(ua);
+          const isIOS =
+            /iP(hone|ad|od)/i.test(ua) ||
+            (/Macintosh/i.test(ua) && "ontouchend" in document);
 
-          if (isIOS) {
-            const ics = buildICS(start, end, m);
-            openICSInline(ics); // iPhone/iPad: sin descargas visibles
-          } else if (isAndroid) {
-            openGoogleCalendarInline(start, end, m); // Android → Google Calendar
+          if (isAndroid) {
+            window.location.href = googleCalendarURL(start, end, m);
+          } else if (isIOS) {
+            downloadICS(buildICS(start, end, m));
           } else {
-            alert("Este botón está configurado solo para iPhone y Android.");
+            const choice = confirm(
+              "¿Abrir en Google Calendar? (Cancelar para descargar .ics)"
+            );
+            if (choice) {
+              window.open(googleCalendarURL(start, end, m), "_blank");
+            } else {
+              downloadICS(buildICS(start, end, m));
+            }
           }
         });
       })();
     </script>
+
     <script>
       (function () {
-        const INVITACION = {
-          novios: "Jessica Gutierrez ",
-          novia: "Mariano Barajas ",
-          // Fecha/Hora de la ceremonia (zona horaria del visitante)
-          // Formato: AAAA-MM-DDTHH:mm (24h)
-          fechaISO: "2025-12-27T15:00",
-          lugar: {
-            nombre: "Quinta Sofia",
-            direccion:
-              "Libertad 150, Los Agricultores de Ocotlán, 47980 Ocotlán, Jal",
-          },
-        };
         const intro = document.getElementById("intro");
         const skipBtn = intro?.querySelector(".skip");
         const prefersReduce = window.matchMedia(
@@ -1147,119 +1260,39 @@
           }, 650);
         }
 
-        function fillCardFromData() {
-          try {
-            const nombres = [
-              INVITACION?.novios?.trim(),
-              INVITACION?.novia?.trim(),
-            ]
-              .filter(Boolean)
-              .join(" & ");
-            const f = new Date(INVITACION?.fechaISO || Date.now());
-            const fechaLegible = new Intl.DateTimeFormat("es-MX", {
-              weekday: "long",
-              day: "2-digit",
-              month: "long",
-              year: "numeric",
-              hour: "2-digit",
-              minute: "2-digit",
-            }).format(f);
-
-            document.getElementById("card-nombres").textContent = nombres ||
-              "Nuestra Boda";
-            document.getElementById("card-fecha").textContent =
-              fechaLegible.replace(",", " ·");
-            document.getElementById("card-lugar").textContent =
-              INVITACION?.lugar?.nombre || "Lugar por confirmar";
-          } catch (e) {
-            /* no-op */
-          }
-        }
-
-        // Calcula transform para que A encaje exactamente sobre B
-        function computeTransform(fromRect, toRect) {
-          const scaleX = toRect.width / fromRect.width;
-          const scaleY = toRect.height / fromRect.height;
-          const translateX =
-            toRect.left +
-            toRect.width / 2 -
-            (fromRect.left + fromRect.width / 2);
-          const translateY =
-            toRect.top +
-            toRect.height / 2 -
-            (fromRect.top + fromRect.height / 2);
-          return { translateX, translateY, scaleX, scaleY };
-        }
-
-        // Hace un morph de la tarjeta hacía el header.hero
-        function morphToHeader() {
-          const card = intro.querySelector(".card3d");
-          if (!card || !hero) {
-            document.body.classList.add("loaded");
-            return;
-          }
-
-          // Señalamos el header como destino
-          hero.classList.add("morph-target");
-
-          // Tomamos el reverso como “cara visible” al momento del morph
-          const fromRect = card.getBoundingClientRect();
-          const toRect = hero.getBoundingClientRect();
-
-          // Creamos un clon visual del card3d (incluyendo estilos)
-          const clone = card.cloneNode(true);
-          clone.classList.add("morph-clone", "paper");
-          // fijamos tamaño y posición inicial idénticos
-          Object.assign(clone.style, {
-            left: fromRect.left + "px",
-            top: fromRect.top + "px",
-            width: fromRect.width + "px",
-            height: fromRect.height + "px",
-            transform: "translate3d(0,0,0) rotateY(180deg)", // ya está volteada
-            borderRadius: getComputedStyle(card).borderRadius,
-            transition:
-              "transform .85s cubic-bezier(.2,.8,.2,1), border-radius .85s ease, opacity .85s ease",
-          });
-
-          document.body.appendChild(clone);
-
-          // Opcional: ocultamos la tarjeta original para que no “duplique”
-          card.style.visibility = "hidden";
-
-          // Disolvemos el fondo de la intro
-          intro.classList.add("dim");
-
-          // Forzamos reflow para que la transición tome la posición inicial
-          clone.getBoundingClientRect();
-
-          // Calculamos transform objetivo
-          const { translateX, translateY, scaleX, scaleY } = computeTransform(
-            fromRect,
-            toRect
-          );
-
-          // Aplicamos transform hacia el header
-          clone.classList.add("morphing-rounded");
-          clone.style.transform = `translate3d(${translateX}px, ${translateY}px, 0) scale(${scaleX}, ${scaleY}) rotateY(180deg)`;
-
-          // Al terminar la transición: mostramos app y retiramos intro/clone
-          const onDone = () => {
-            clone.removeEventListener("transitionend", onDone);
-            clone.remove();
-            document.body.classList.add("loaded"); // ahora ya se ve tu .app y el hero
-            intro.classList.add("hide");
-            setTimeout(() => {
-              intro.remove();
-            }, 450);
-          };
-          clone.addEventListener("transitionend", onDone);
-        }
-
         function runAnimation() {
           if (!intro) return showAppNow();
           if (prefersReduce) return showAppNow();
 
-          fillCardFromData();
+          // Rellena la tarjeta con tus datos como antes
+          (function fillCardFromData() {
+            try {
+              const nombres = [
+                INVITACION?.novios?.trim(),
+                INVITACION?.novia?.trim(),
+              ]
+                .filter(Boolean)
+                .join(" & ");
+              const f = new Date(INVITACION?.fechaISO || Date.now());
+              const fechaLegible = new Intl.DateTimeFormat("es-MX", {
+                weekday: "long",
+                day: "2-digit",
+                month: "long",
+                year: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+              }).format(f);
+              document.getElementById("card-nombres").textContent =
+                nombres || "Nuestra Boda";
+              document.getElementById("card-fecha").textContent =
+                fechaLegible.replace(",", " ·");
+              document.getElementById("card-lugar").textContent =
+                INVITACION?.lugar?.nombre || "Lugar por confirmar";
+            } catch (e) {}
+          })();
+
+          const EXTRA_LECTURA = 1500; // ms extra para leer el frente de la tarjeta
+          const LECTURA_REVERSO = 500; // ms para que se vea brevemente el reverso antes de desvanecer
 
           // Paso 1: abrir solapa
           intro.classList.add("open");
@@ -1267,23 +1300,33 @@
           // Paso 2: sacar tarjeta
           setTimeout(() => {
             intro.classList.add("pull");
-          }, 750);
+          }, 950);
 
-          // Paso 3: giro a reverso
+          // Paso 3: giro a reverso (esperamos más para leer el frente)
           setTimeout(() => {
             intro.classList.add("flip");
-          }, 1750);
+          }, 1850 + EXTRA_LECTURA);
 
-          // Paso 4: simulamos breve carga en el reverso y luego morph
+          // Paso 4: en lugar de “morph”, hacemos fade-out y mostramos la página
           setTimeout(() => {
-            morphToHeader();
-          }, 2450); // ~700ms de “loader” visible tras el flip
+            // oculta visualmente el loader/hint (por si siguen visibles)
+            const loader = intro.querySelector(".loader");
+            const hint = intro.querySelector(".back-hint");
+            if (loader) loader.style.opacity = "0";
+            if (hint) hint.style.opacity = "0";
+
+            // desvanecer la intro y revelar la app
+            document.body.classList.add("loaded");
+            intro.classList.add("fade-out");
+
+            // limpieza final
+            setTimeout(() => {
+              intro.remove();
+            }, 900);
+          }, 1850 + EXTRA_LECTURA + LECTURA_REVERSO);
         }
 
-        // Botón "Saltar"
         skipBtn?.addEventListener("click", showAppNow);
-
-        // Iniciar cuando todo cargue (para tener INVITACION listo)
         window.addEventListener("load", runAnimation);
       })();
     </script>
