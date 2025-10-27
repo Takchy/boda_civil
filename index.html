@@ -714,6 +714,39 @@
         /* ya tienes el rotateY(180deg); solo nos aseguramos de que no haya traslaciones extra */
         transform: translate3d(-50%, -135%, 0) rotateY(180deg);
       }
+
+      /* Evita zoom en iPhone al enfocar campos (iOS) */
+      input,
+      select,
+      textarea,
+      button {
+        font-size: 16px !important; /* clave */
+        line-height: 1.25;
+      }
+
+      /* Tap targets cómodos */
+      input,
+      select,
+      textarea {
+        padding: 12px 14px;
+        border-radius: 10px;
+      }
+
+      /* iOS: evita reflow raro con auto-ajuste de texto */
+      html {
+        -webkit-text-size-adjust: 100%;
+      }
+
+      /* (Opcional) Solo en pantallas chicas, por si tu tipografía base ya es grande en desktop */
+      @media (max-width: 480px) {
+        label {
+          font-size: 0.95rem;
+        }
+      }
+      /* Si tienes algo como .hero { min-height: 100vh } */
+      .hero {
+        min-height: 100svh;
+      } /* o 100dvh */
     </style>
   </head>
   <body>
