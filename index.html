@@ -1257,7 +1257,7 @@
             (/Macintosh/i.test(ua) && "ontouchend" in document);
 
           if (isAndroid) {
-            window.location.href = googleCalendarURL(start, end, m);
+            downloadICS(buildICS(start, end, m));
           } else if (isIOS) {
             downloadICS(buildICS(start, end, m));
           } else {
