@@ -979,8 +979,7 @@
         <form
           action="https://docs.google.com/forms/d/e/1FAIpQLSdwEEjd31niWu0NV7aBp8nkD2cMhDPSIkeUKheKp9TWhxOlWg/formResponse"
           method="POST"
-          target="gform_target"
-          onsubmit="return handleRSVPSubmit(event)"
+          onsubmit="return enviarRSVP(event)"
         >
           <div class="row">
             <div>
@@ -1061,18 +1060,6 @@
           </div>
         </form>
         <!-- Iframe oculto para evitar redirección -->
-        <iframe
-          name="gform_target"
-          title="Registro RSVP"
-          style="
-            position: absolute;
-            width: 0;
-            height: 0;
-            border: 0;
-            opacity: 0;
-            pointer-events: none;
-          "
-        ></iframe>
       </section>
 
       <div id="rsvpOk" class="note" style="display: none; margin-top: 10px">
@@ -1471,6 +1458,42 @@
           }
         } catch {}
       });
+    </script>
+
+    <script>
+      function enviarRSVP(e) {
+        e.preventDefault();
+        const form = e.target;
+        const btn = form.querySelector('button[type="submit"]');
+        if (btn) btn.disabled = true;
+
+        const data = new FormData(form);
+
+        // Envío robusto para Android/iOS: POST directo a Google Forms sin CORS
+        fetch(form.action, { method: "POST", mode: "no-cors", body: data })
+          .then(() => {
+            // Asumimos éxito (respuesta opaca)
+            const ok = document.getElementById("rsvpOk");
+            if (ok) {
+              ok.style.display = "block";
+            }
+            form.reset();
+            // Opcional: desplazar al mensaje
+            if (ok) ok.scrollIntoView({ behavior: "smooth", block: "center" });
+          })
+          .catch(() => {
+            const err = document.getElementById("rsvpError");
+            if (err) {
+              err.style.display = "block";
+              err.scrollIntoView({ behavior: "smooth", block: "center" });
+            }
+          })
+          .finally(() => {
+            if (btn) btn.disabled = false;
+          });
+
+        return false;
+      }
     </script>
   </body>
 </html>
