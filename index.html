@@ -799,7 +799,7 @@
           <span id="novia">[Su Nombre]</span>
         </h1>
         <p class="sub" id="fecha-legible">
-          Sábado 20 de diciembre de 2025 · 5:30 p.m.
+          Sábado 03 de Enero de 2026 · 5:30 p.m.
         </p>
 
         <div class="countdown" aria-label="Cuenta regresiva">
@@ -855,7 +855,7 @@
           <h2 id="detalles-titulo">Detalles</h2>
           <p>
             <strong>Fecha:</strong>
-            <span id="fecha-texto">20 de diciembre de 2025</span>
+            <span id="fecha-texto">03 de enero de 2026</span>
           </p>
           <p><strong>Hora:</strong> <span id="hora-texto">17:30</span></p>
           <p>
@@ -870,9 +870,7 @@
         <article class="card">
           <h2>Dress code</h2>
           <p>Formal/Coctel. Colores sugeridos: neutros y tonos azules.</p>
-          <span class="badge"
-            >IPS</span
-          >
+          <span class="badge">IPS</span>
         </article>
 
         <article class="card">
@@ -936,11 +934,7 @@
               alt="Copa de brindis"
               loading="lazy"
             />
-            <img
-              src="images/Imagen3.jpg"
-              alt="Cita en el mar"
-              loading="lazy"
-            />
+            <img src="images/Imagen3.jpg" alt="Cita en el mar" loading="lazy" />
           </div>
         </article>
       </section>
@@ -949,13 +943,18 @@
       <section id="rsvp" class="card" aria-labelledby="confirma">
         <h2 id="confirma">Confirmación de asistencia (RSVP)</h2>
         <p class="muted">Tu respuesta nos ayuda a planear mejor. ¡Gracias!</p>
-        <form action="https://formspree.io/f/TU_ID" method="POST">
+        <form
+          action="https://docs.google.com/forms/d/e/1FAIpQLSdwEEjd31niWu0NV7aBp8nkD2cMhDPSIkeUKheKp9TWhxOlWg/formResponse"
+          method="POST"
+          target="gform_target"
+          onsubmit="return handleRSVPSubmit(event)"
+        >
           <div class="row">
             <div>
               <label for="nombre">Nombre completo</label>
               <input
                 id="nombre"
-                name="nombre"
+                name="entry.1616862916"
                 type="text"
                 placeholder="Ejem: Ana Pérez"
                 required
@@ -966,7 +965,7 @@
               <label for="telefono">Teléfono</label>
               <input
                 id="telefono"
-                name="telefono"
+                name="entry.1182474863"
                 type="tel"
                 placeholder="10 dígitos"
                 inputmode="tel"
@@ -978,15 +977,15 @@
           <div class="row">
             <div>
               <label for="asistencia">¿Asistirás?</label>
-              <select id="asistencia" name="asistencia" required>
+              <select id="asistencia" name="entry.1491225501" required>
                 <option value="">Selecciona…</option>
-                <option>Sí, ahí estaré</option>
-                <option>No podré asistir</option>
+                <option value="SI">Sí, ahí estaré</option>
+                <option value="NO">No podré asistir</option>
               </select>
             </div>
             <div>
               <label for="acompanantes">Acompañantes</label>
-              <select id="acompanantes" name="acompanantes">
+              <select id="acompanantes" name="entry.1549164973">
                 <option value="0">0</option>
                 <option value="1">1</option>
                 <option value="2">2</option>
@@ -1000,15 +999,6 @@
                 <option value="10">10</option>
               </select>
             </div>
-          </div>
-          <div>
-            <label for="comentarios">Comentarios (alergias, notas)</label>
-            <textarea
-              id="comentarios"
-              name="comentarios"
-              rows="3"
-              placeholder="Opcional"
-            ></textarea>
           </div>
 
           <!-- Honeypot anti-bots -->
@@ -1039,23 +1029,18 @@
         </form>
       </section>
 
+      <div id="rsvpOk" class="note" style="display: none; margin-top: 10px">
+        ¡Gracias! Tu confirmación se registró correctamente.
+      </div>
+
       <!-- Mesa de regalos / Nota -->
-      <section class="grid grid-2" aria-labelledby="regalos">
+      <section class="grid grid-1" aria-labelledby="regalos">
         <article class="card giftlist">
           <h2 id="regalos">Tu presencia es nuestro mejor regalo.</h2>
           <p class="muted">
-            Si deseas hacernos un obsequio, una ayuda económica será muy apreciada para esta nueva etapa de nuestras vidas.
+            Si deseas hacernos un obsequio, una ayuda económica será muy
+            apreciada para esta nueva etapa de nuestras vidas.
           </p>
-        </article>
-        <article class="card">
-          <h2>Información útil</h2>
-          <ul>
-            <li>Clima esperado templado. Considera un abrigo ligero.</li>
-            <li>Habrá área designada para fumar en exterior.</li>
-            <li>
-              Si necesitas hospedaje, contáctanos para sugerencias cercanas.
-            </li>
-          </ul>
         </article>
       </section>
 
@@ -1329,6 +1314,26 @@
         skipBtn?.addEventListener("click", showAppNow);
         window.addEventListener("load", runAnimation);
       })();
+    </script>
+
+    <script>
+      function handleRSVPSubmit(e) {
+        const btn = document.getElementById("rsvpSubmit");
+        const ok = document.getElementById("rsvpOk");
+        const iframe = document.getElementsByName("gform_target")[0];
+        btn.disabled = true;
+        const t = btn.textContent;
+        btn.textContent = "Enviando…";
+        const onload = () => {
+          btn.disabled = false;
+          btn.textContent = t;
+          ok.style.display = "block";
+          e.target.reset();
+          iframe.removeEventListener("load", onload);
+        };
+        iframe.addEventListener("load", onload);
+        return true; // dejar que el form haga el POST nativo (evita CORS)
+      }
     </script>
   </body>
 </html>
