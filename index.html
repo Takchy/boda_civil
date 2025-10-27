@@ -1072,7 +1072,7 @@
               margin-top: 10px;
             "
           >
-            <button class="btn btn-primary" type="submit">
+            <button class="btn btn-primary" id="rsvpSubmit" type="submit">
               Enviar confirmación
             </button>
             <span class="note"
@@ -1084,8 +1084,15 @@
         <!-- Iframe oculto para evitar redirección -->
         <iframe
           name="gform_target"
-          style="display: none"
           title="Registro RSVP"
+          style="
+            position: absolute;
+            width: 0;
+            height: 0;
+            border: 0;
+            opacity: 0;
+            pointer-events: none;
+          "
         ></iframe>
       </section>
 
@@ -1120,6 +1127,7 @@
         <button class="btn btn-primary">Cerrar</button>
       </form>
     </dialog>
+
     <script>
       // ============ CONFIG RÁPIDA ============
       const INVITACION = {
@@ -1388,9 +1396,12 @@
 
     <script>
       function handleRSVPSubmit(e) {
-        e.preventDefault(); // evitamos la navegación
+        e.preventDefault();
+
         const form = e.target;
-        const btn = document.getElementById("rsvpSubmit");
+        const btn =
+          document.getElementById("rsvpSubmit") ||
+          form.querySelector('button[type="submit"]');
         const ok = document.getElementById("rsvpOk");
         const calBtn = document.getElementById("btnCal");
         const iframe = document.getElementsByName("gform_target")[0];
@@ -1398,51 +1409,76 @@
           document.getElementById("asistencia")?.value || ""
         ).toUpperCase();
 
-        // Deshabilitar botón mientras se envía
-        btn.disabled = true;
-        const t = btn.textContent;
-        btn.textContent = "Enviando…";
+        // Si por algún motivo no encontramos el iframe, enviamos normal (último recurso)
+        if (!iframe) {
+          form.submit();
+          return false;
+        }
 
-        // Preparar escucha a la respuesta del iframe (cuando Google Forms responde)
+        // Feedback de envío
+        let originalText = "";
+        if (btn) {
+          btn.disabled = true;
+          originalText = btn.textContent;
+          btn.textContent = "Enviando…";
+        }
+
+        // Handler de "terminó la carga" en el iframe (Google Forms respondió)
         const onload = () => {
-          // Restaurar botón
-          btn.disabled = false;
-          btn.textContent = t;
+          cleanup();
+          successFlow();
+        };
 
-          // Limpiar escucha
-          iframe.removeEventListener("load", onload);
+        // Fallback: por si iOS no dispara 'load' en cross-origin, marcamos éxito a los 2.5s
+        const fallbackTimer = setTimeout(() => {
+          cleanup();
+          successFlow();
+        }, 2500);
 
-          // Resetear formulario y mostrar mensajes según elección
-          ok.style.display = "block";
+        function cleanup() {
+          try {
+            iframe.removeEventListener("load", onload);
+          } catch {}
+          try {
+            clearTimeout(fallbackTimer);
+          } catch {}
+          if (btn) {
+            btn.disabled = false;
+            btn.textContent = originalText || "Enviar confirmación";
+          }
+        }
+
+        function successFlow() {
+          if (ok) {
+            ok.style.display = "block";
+          }
           form.reset();
 
           if (asis === "SI") {
-            // Mostrar botón "Agregar al calendario"
-            if (calBtn) calBtn.style.display = "";
-            ok.textContent =
-              "¡Gracias! Tu confirmación se registró correctamente. Ya puedes agregar el evento a tu calendario.";
-            // Enfocar el botón para accesibilidad
-            calBtn?.focus();
+            if (ok)
+              ok.textContent =
+                "¡Gracias! Tu confirmación se registró correctamente. Ya puedes agregar el evento a tu calendario.";
+            if (calBtn) {
+              calBtn.style.display = "";
+              calBtn.focus?.();
+            }
           } else if (asis === "NO") {
-            // Abrir modal de “lamentamos no contar con tu presencia”
+            if (ok) ok.textContent = "¡Gracias por confirmarlo!";
             const dlg = document.getElementById("noModal");
             if (dlg?.showModal) dlg.showModal();
             else
               alert(
                 "Lamentamos que no puedas acompañarnos. ¡Gracias por avisar!"
               );
-            ok.textContent = "¡Gracias por confirmarlo!";
           } else {
-            // Caso raro: sin selección válida
-            ok.textContent = "¡Gracias! Hemos recibido tu respuesta.";
+            if (ok) ok.textContent = "¡Gracias! Hemos recibido tu respuesta.";
           }
-        };
+        }
 
-        iframe.addEventListener("load", onload);
-
-        // Enviar realmente el formulario al iframe (sin CORS)
+        // Suscribir el load y enviar al iframe (sin cambiar de página)
+        iframe.addEventListener("load", onload, { once: true });
         form.submit();
-        return false; // mantenemos la SPA (no navegamos)
+        return false;
       }
     </script>
   </body>
