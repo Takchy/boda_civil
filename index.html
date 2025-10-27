@@ -1468,25 +1468,23 @@
         if (btn) btn.disabled = true;
 
         const data = new FormData(form);
+        const nombre = document.getElementById("nombre")?.value?.trim() || "";
+        const asis = (
+          document.getElementById("asistencia")?.value || ""
+        ).toUpperCase();
 
-        // Envío robusto para Android/iOS: POST directo a Google Forms sin CORS
         fetch(form.action, { method: "POST", mode: "no-cors", body: data })
           .then(() => {
-            // Asumimos éxito (respuesta opaca)
-            const ok = document.getElementById("rsvpOk");
-            if (ok) {
-              ok.style.display = "block";
-            }
-            form.reset();
-            // Opcional: desplazar al mensaje
-            if (ok) ok.scrollIntoView({ behavior: "smooth", block: "center" });
+            try {
+              localStorage.setItem("rsvpStatus", asis === "SI" ? "SI" : "NO");
+              if (nombre) localStorage.setItem("rsvpNombre", nombre);
+            } catch {}
+            //  Aquí hacemos el reemplazo del formulario por el mensaje final
+            renderRSVPState(asis === "SI" ? "SI" : "NO", nombre);
           })
           .catch(() => {
-            const err = document.getElementById("rsvpError");
-            if (err) {
-              err.style.display = "block";
-              err.scrollIntoView({ behavior: "smooth", block: "center" });
-            }
+            // (opcional) muestra un error si quieres
+            alert("Hubo un problema al enviar. Intenta de nuevo.");
           })
           .finally(() => {
             if (btn) btn.disabled = false;
