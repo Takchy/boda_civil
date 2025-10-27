@@ -714,60 +714,6 @@
         /* ya tienes el rotateY(180deg); solo nos aseguramos de que no haya traslaciones extra */
         transform: translate3d(-50%, -135%, 0) rotateY(180deg);
       }
-      dialog {
-        border: none;
-        border-radius: 16px;
-        padding: 1.5rem;
-        max-width: 400px;
-        width: 90%;
-        box-shadow: 0 8px 28px rgba(0, 0, 0, 0.25);
-        background: #fff;
-        color: var(--ink, #2b2b2b);
-        text-align: center;
-        animation: fadeIn 0.3s ease;
-      }
-
-      /* Fondo difuminado detrás del modal */
-      dialog::backdrop {
-        background: rgba(0, 0, 0, 0.45);
-        backdrop-filter: blur(2px);
-      }
-
-      /* Botón dentro del modal */
-      dialog form button {
-        background: var(--brand, #5c544a);
-        color: #fff;
-        border: none;
-        border-radius: 8px;
-        padding: 0.6rem 1.2rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: background 0.25s ease;
-      }
-      dialog form button:hover {
-        background: #403a32;
-      }
-
-      /* Adaptación móvil */
-      @media (max-width: 480px) {
-        dialog {
-          width: 92%;
-          font-size: 0.95rem;
-          padding: 1.25rem;
-        }
-      }
-
-      /* Animación suave */
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-          transform: translateY(10px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
     </style>
   </head>
   <body>
@@ -1117,17 +1063,6 @@
       </footer>
     </div>
 
-    <dialog id="noModal">
-      <h3 style="margin: 0 0 6px">¡Gracias por avisarnos!</h3>
-      <p style="margin: 0 0 12px">
-        Lamentamos que no puedas acompañarnos, pero te agradecemos el detalle de
-        confirmarlo.
-      </p>
-      <form method="dialog">
-        <button class="btn btn-primary">Cerrar</button>
-      </form>
-    </dialog>
-
     <script>
       // ============ CONFIG RÁPIDA ============
       const INVITACION = {
@@ -1395,44 +1330,88 @@
     </script>
 
     <script>
+      // Reemplaza la sección RSVP por un bloque final según estado
+      function renderRSVPState(estado, nombre = "") {
+        const rsvpSec = document.getElementById("rsvp");
+        const calBtn = document.getElementById("btnCal");
+        if (!rsvpSec) return;
+
+        const graciasSi = `
+      <h2 id="confirma">¡Gracias por confirmar!</h2>
+      <p class="muted">Gracias ${
+        nombre ? `<strong>${nombre}</strong>` : ""
+      } por tu respuesta. ¡Nos hace mucha ilusión verte!</p>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+        <button class="btn btn-ghost" id="btnCalInline">Agregar al calendario</button>
+        <span class="note">Guárdalo para que no se te pase la fecha ✨</span>
+      </div>
+    `;
+
+        const graciasNo = `
+      <h2 id="confirma">¡Gracias por avisarnos!</h2>
+      <p class="muted">Lamentamos que no puedas acompañarnos, pero apreciamos mucho que lo hayas confirmado.</p>
+    `;
+
+        // Reemplazar contenido completo de la sección RSVP
+        rsvpSec.innerHTML = estado === "SI" ? graciasSi : graciasNo;
+
+        // Si “Sí”, mostramos botón del héroe y conectamos el inline
+        if (estado === "SI") {
+          if (calBtn) calBtn.style.display = ""; // mostrar el del héroe
+          const inline = document.getElementById("btnCalInline");
+          if (inline && calBtn) {
+            inline.addEventListener("click", (ev) => {
+              ev.preventDefault();
+              calBtn.click(); // reutiliza tu lógica de calendario existente
+            });
+          }
+        }
+      }
+
+      // Manejo de envío: al terminar, guardamos estado y reemplazamos el formulario
       function handleRSVPSubmit(e) {
         e.preventDefault();
 
         const form = e.target;
-        const btn =
-          document.getElementById("rsvpSubmit") ||
-          form.querySelector('button[type="submit"]');
-        const ok = document.getElementById("rsvpOk");
-        const calBtn = document.getElementById("btnCal");
         const iframe = document.getElementsByName("gform_target")[0];
+        const btn = form.querySelector('button[type="submit"]');
+        const nombre = document.getElementById("nombre")?.value?.trim() || "";
         const asis = (
           document.getElementById("asistencia")?.value || ""
         ).toUpperCase();
 
-        // Si por algún motivo no encontramos el iframe, enviamos normal (último recurso)
         if (!iframe) {
           form.submit();
           return false;
         }
 
-        // Feedback de envío
+        // Feedback en botón
         let originalText = "";
         if (btn) {
-          btn.disabled = true;
           originalText = btn.textContent;
+          btn.disabled = true;
           btn.textContent = "Enviando…";
         }
 
-        // Handler de "terminó la carga" en el iframe (Google Forms respondió)
-        const onload = () => {
-          cleanup();
-          successFlow();
+        const finish = () => {
+          if (btn) {
+            btn.disabled = false;
+            btn.textContent = originalText || "Enviar confirmación";
+          }
+          try {
+            localStorage.setItem("rsvpStatus", asis === "SI" ? "SI" : "NO");
+            if (nombre) localStorage.setItem("rsvpNombre", nombre);
+          } catch {}
+          renderRSVPState(asis === "SI" ? "SI" : "NO", nombre);
         };
 
-        // Fallback: por si iOS no dispara 'load' en cross-origin, marcamos éxito a los 2.5s
-        const fallbackTimer = setTimeout(() => {
+        const onload = () => {
           cleanup();
-          successFlow();
+          finish();
+        };
+        const fallback = setTimeout(() => {
+          cleanup();
+          finish();
         }, 2500);
 
         function cleanup() {
@@ -1440,46 +1419,25 @@
             iframe.removeEventListener("load", onload);
           } catch {}
           try {
-            clearTimeout(fallbackTimer);
+            clearTimeout(fallback);
           } catch {}
-          if (btn) {
-            btn.disabled = false;
-            btn.textContent = originalText || "Enviar confirmación";
-          }
         }
 
-        function successFlow() {
-          if (ok) {
-            ok.style.display = "block";
-          }
-          form.reset();
-
-          if (asis === "SI") {
-            if (ok)
-              ok.textContent =
-                "¡Gracias! Tu confirmación se registró correctamente. Ya puedes agregar el evento a tu calendario.";
-            if (calBtn) {
-              calBtn.style.display = "";
-              calBtn.focus?.();
-            }
-          } else if (asis === "NO") {
-            if (ok) ok.textContent = "¡Gracias por confirmarlo!";
-            const dlg = document.getElementById("noModal");
-            if (dlg?.showModal) dlg.showModal();
-            else
-              alert(
-                "Lamentamos que no puedas acompañarnos. ¡Gracias por avisar!"
-              );
-          } else {
-            if (ok) ok.textContent = "¡Gracias! Hemos recibido tu respuesta.";
-          }
-        }
-
-        // Suscribir el load y enviar al iframe (sin cambiar de página)
         iframe.addEventListener("load", onload, { once: true });
-        form.submit();
+        form.submit(); // envía a Google Forms en segundo plano
         return false;
       }
+
+      // Al cargar: si ya respondió, mostrar bloque final (y ocultar formulario)
+      document.addEventListener("DOMContentLoaded", () => {
+        try {
+          const estado = localStorage.getItem("rsvpStatus");
+          const nombre = localStorage.getItem("rsvpNombre") || "";
+          if (estado === "SI" || estado === "NO") {
+            renderRSVPState(estado, nombre);
+          }
+        } catch {}
+      });
     </script>
   </body>
 </html>
